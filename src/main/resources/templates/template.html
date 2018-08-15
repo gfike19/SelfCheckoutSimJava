@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head th:fragment="dochead">
+
+	<link th:href="@{/css/styles.css}" rel="stylesheet" />
+	
+	<title>Self Checkout Simulator</title>
+</head>
+
+<body>
+
+<nav th:fragment="navigation">
+	<ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="addtodb">Add item to the database</a></li>
+        <li><a href="/NewOrder">Create a new order</a></li>
+    </ul>
+</nav>
+
+</body>
+</html>
