@@ -16,22 +16,24 @@ public class Item extends AbstractEntity {
 	
 	private boolean pLb;
 	
-	private int plu;
+	private String plu;
 	
 	private boolean fs;
 	
 	private Date created;
-
-	public Item(String name, float price, boolean pLb, int plu, boolean fs) {
+	
+	public Item(String name, float price, boolean pLb, String plu, boolean fs) {
 		super();
 		
 		this.setName(name);
 		this.setPrice(price);
 		this.setpLb(pLb);
 		this.setFs(fs);
+		this.setPlu(plu);
 		this.created = new Date();
 	}
 	
+
 	@NotNull
 	@Column(name="Name")
 	public String getName() {
@@ -64,12 +66,12 @@ public class Item extends AbstractEntity {
 	
 	@NotNull
 	@Column(name="PLU")
-	public int getPlu() {
+	public String getPlu() {
 		return plu;
 	}
 
-	public void setPlu(int plu) {
-		this.plu = plu;
+	public void setPlu(String plu2) {
+		this.plu = plu2;
 	}
 	
 	@NotNull

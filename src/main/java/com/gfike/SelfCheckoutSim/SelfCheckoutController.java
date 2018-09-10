@@ -35,24 +35,29 @@ public class SelfCheckoutController {
 		
 		//get values from form
 		String name = request.getParameter("name");
-		float price = Integer.parseInt(request.getParameter("price"));
-		boolean pLb = Boolean.parseBoolean(request.getParameter("plb"));
-		int plu = Integer.parseInt(request.getParameter("plu"));
-		boolean fs = Boolean.parseBoolean(request.getParameter("fs"));
+		float price = Float.parseFloat(request.getParameter("price"));
+		String plu = request.getParameter("plu");
+		boolean fs;
+		boolean pLb;
 		
-		Item i = new Item(name, price, pLb, plu, fs);
+		if (request.getParameter("pLb").equals("true")) {
+			pLb = true;
+		}
+		else {
+			pLb = false;
+		}
+		
+		if (request.getParameter("fs").equals("true")) {
+			fs = true;
+		}
+		else {
+			fs = false;
+		}
+		
+		Item i = new Item(name,price, pLb, plu, fs);
+		
 		
 		itemDao.save(i);
-//		Item j = itemDao.findById(i.getUid());
-//		String msg = " ";
-//		
-//		if (j != null) {
-//			msg = "Item " + i.getName() + " was succesfully added!";
-//		}
-//		else
-//			msg = "Item " + i.getName() + " was not added.";
-//		HttpSession session = request.getSession();
-//		session.setAttribute("item", i);
 		return "redirect:addtodb";
 	}
 	

@@ -9,12 +9,11 @@
 	<div th:replace="template :: navigation"></div>
 	<form method="post">
 		Name: <input type="text" name="name" id="name" required/>
-		Price: <input type="number" name="price" id="price" required/> Per Unit? <input type="radio" name="pLb" id="u"/>
-		Per Pound? <input type="radio" name="pLb"/>
+		Price: <input type="text" name="price" id="price" step=any required/> 
+		Per Pound? <input type="checkbox" name="pLb" id="pLb" value="true"/>
 		<br></br>
-		PLU (leave blank if not applicable): <input type="number" name="plu"/>
-		Foodstamps eligible? - Yes <input type="radio" name="fs"/> 
-		No <input type="radio" name="fs"/> 
+		PLU (leave blank if not applicable): <input type="text" name="plu" id="plu"/>
+		Foodstamps eligible? <input type="checkbox" name="fs" id="fs" value="true"/> 
 		<br></br>
 		<button type="submit">Submit</button>
 	</form>
