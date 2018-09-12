@@ -65,7 +65,7 @@ public class Item extends AbstractEntity {
 	}
 	
 	@NotNull
-	@Column(name="PLU")
+	@Column(name="PLU", length=12)
 	public String getPlu() {
 		return plu;
 	}

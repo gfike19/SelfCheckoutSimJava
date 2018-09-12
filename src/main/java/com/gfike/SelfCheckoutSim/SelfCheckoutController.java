@@ -37,22 +37,33 @@ public class SelfCheckoutController {
 		String name = request.getParameter("name");
 		float price = Float.parseFloat(request.getParameter("price"));
 		String plu = request.getParameter("plu");
-		boolean fs;
-		boolean pLb;
 		
-		if (request.getParameter("pLb").equals("true")) {
-			pLb = true;
-		}
-		else {
-			pLb = false;
+		if (plu.isEmpty()) {
+			plu = Helpers.createPlu(name);
 		}
 		
-		if (request.getParameter("fs").equals("true")) {
-			fs = true;
-		}
-		else {
+		boolean pLb = false, fs = false;
+		
+		
+		try {
+			String tempPlb = request.getParameter("pLb");
+			
+			if (tempPlb.equals("true")) {
+				pLb = true;
+			}
+		} catch (Exception e) {
 			fs = false;
 		}
+		
+		try {
+			String tempFs = request.getParameter("fs");
+			if (tempFs.equals("true")) {
+				fs = true;
+			}
+		} catch (Exception e) {
+			fs = false;
+		}
+		
 		
 		Item i = new Item(name,price, pLb, plu, fs);
 		
