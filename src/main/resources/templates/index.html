@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/">
-
+<header>
+	<h1>Welcome to the Self Checkout Simulator!</h1>
+</header>
 <div th:replace="template :: navigation"></div>
 
 <body>
-
+	<table>
+		<tr>
+			<td>Name</td> <td>PLU</td> <td>Price</td>
+		</tr>
+		<tr th:each="item: ${items}">
+			<td th:text="${item.name}"/>
+			<td th:text="${item.plu"/>
+			<td th:text="${item.price}"/>
+		</tr>
+	</table>
 
 </body>
 

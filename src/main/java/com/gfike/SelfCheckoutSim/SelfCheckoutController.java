@@ -1,5 +1,7 @@
 package com.gfike.SelfCheckoutSim;
 import java.util.List;
+
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -15,23 +17,29 @@ import org.springframework.dao.DataIntegrityViolationException;
 public class SelfCheckoutController {
 	@Autowired
 	ItemDao itemDao;
+	//private HttpSession session;
 	
 	@RequestMapping(value = "/",method = RequestMethod.GET)
-	public String index(){
-		
+	public String index(Model model){
+		List<Item> items = itemDao.findAll();
+		model.addAttribute("items", items);
 		return "index";
 	}
 	
 	
 	@RequestMapping(value= {"/addtodb", "redirect:addtodb"}, method = RequestMethod.GET)
-	public String CreateNewItemGet () {
-//		String msg = " ";
-//		model.addAttribute("msg", msg);
+	public String CreateNewItemGet (HttpSession session, Model model) {
+		
+		if (session.getAttribute("msg") != "") {
+			String msg = (String)session.getAttribute("msg");
+			model.addAttribute("msg", msg);
+			session.removeAttribute("msg");
+		}
 		return "addtodb";
 	}
 	
 	@RequestMapping(value="/addtodb", method = RequestMethod.POST)
-	public String CreateNewItemPost (HttpServletRequest request) {
+	public String CreateNewItemPost (HttpServletRequest request, HttpSession session) {
 		
 		//get values from form
 		String name = request.getParameter("name");
@@ -66,9 +74,9 @@ public class SelfCheckoutController {
 		
 		
 		Item i = new Item(name,price, pLb, plu, fs);
-		
-		
 		itemDao.save(i);
+		String msg = "Item " + name + " has been successfully added to the database!";
+		session.setAttribute("msg", msg);
 		return "redirect:addtodb";
 	}
 	

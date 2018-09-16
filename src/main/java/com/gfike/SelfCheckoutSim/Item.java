@@ -22,6 +22,8 @@ public class Item extends AbstractEntity {
 	
 	private Date created;
 	
+	public Item () {}
+	
 	public Item(String name, float price, boolean pLb, String plu, boolean fs) {
 		super();
 		

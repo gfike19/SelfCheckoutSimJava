@@ -18,7 +18,10 @@
 		<button type="submit">Submit</button>
 	</form>
 	
-	<!-- <span th:if="${msg.length} &gt; 1" th:text="${msg}"> </span> -->
+	<!-- <div th:if="${msg} != '' "> -->
+		<span th:text="${msg}">
+		</span>
+	<!-- </div -->
 </body>
 
 </html>
