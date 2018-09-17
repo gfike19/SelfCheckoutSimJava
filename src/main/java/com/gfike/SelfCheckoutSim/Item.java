@@ -93,7 +93,7 @@ public class Item extends AbstractEntity {
 		return this.created;
 	}
 	
-	protected void setDateCreated(Date created) {
+	public void setDateCreated(Date created) {
 		this.created = created;
 	}
 	

@@ -6,14 +6,16 @@
 <div th:replace="template :: navigation"></div>
 
 <body>
+<h2>Items last added:</h2>
 	<table>
 		<tr>
-			<td>Name</td> <td>PLU</td> <td>Price</td>
+			<td>Name</td> <td>PLU</td> <td>Price</td><td>Date Added</td>
 		</tr>
 		<tr th:each="item: ${items}">
-			<td th:text="${item.name}"/>
-			<td th:text="${item.plu"/>
-			<td th:text="${item.price}"/>
+			<td th:text="${item.name}"></td>
+			<td th:text="${item.plu}"></td>
+			<td th:text="${item.price}"></td>
+			<!-- TODO add date to this column, also maybe add formatting to table? -->
 		</tr>
 	</table>
 

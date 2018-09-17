@@ -81,6 +81,8 @@ public class SelfCheckoutController {
 	}
 	
 	
+	
+	
 	@RequestMapping(value="/error", method = RequestMethod.GET)
 	public String error () {
 		return "error";
