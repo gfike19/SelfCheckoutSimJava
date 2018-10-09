@@ -1,4 +1,4 @@
-package com.gfike.SelfCheckoutSim;
+package com.gfike.SelfCheckoutSim.models;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

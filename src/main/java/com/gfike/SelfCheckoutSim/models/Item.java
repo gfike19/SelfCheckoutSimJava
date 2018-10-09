@@ -1,8 +1,9 @@
-package com.gfike.SelfCheckoutSim;
+package com.gfike.SelfCheckoutSim.models;
 
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -20,7 +21,7 @@ public class Item extends AbstractEntity {
 	
 	private boolean fs;
 	
-	private Date created;
+//	private Date dateCreated;
 	
 	public Item () {}
 	
@@ -32,7 +33,6 @@ public class Item extends AbstractEntity {
 		this.setpLb(pLb);
 		this.setFs(fs);
 		this.setPlu(plu);
-		this.created = new Date();
 	}
 	
 
@@ -87,15 +87,17 @@ public class Item extends AbstractEntity {
 	}
 	
 	
-	@NotNull
-	@Column(name="DateAdded")
-	public Date getDateCreated() {
-		return this.created;
-	}
-	
-	public void setDateCreated(Date created) {
-		this.created = created;
-	}
-	
+//	@PrePersist
+//	  public void setDateCreated() {
+//	    dateCreated = new Date();
+//	  }
+//
+//	public Date getDateCreated() {
+//		return dateCreated;
+//	}
+//
+//	public void setDateCreated(Date dateCreated) {
+//		this.dateCreated = dateCreated;
+//	}
 
 }

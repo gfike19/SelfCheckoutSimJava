@@ -1,4 +1,4 @@
-package com.gfike.SelfCheckoutSim;
+package com.gfike.SelfCheckoutSim.controllers;
 import java.util.List;
 
 import javax.servlet.ServletRequest;
@@ -10,11 +10,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.AbstractController;
+
+import com.gfike.SelfCheckoutSim.Helpers;
+import com.gfike.SelfCheckoutSim.daos.ItemDao;
+import com.gfike.SelfCheckoutSim.models.Item;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 @Controller
-public class SelfCheckoutController {
+public class AddToDbController {
 	@Autowired
 	ItemDao itemDao;
 	//private HttpSession session;
