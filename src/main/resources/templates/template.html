@@ -13,9 +13,17 @@
 	<ul>
         <li><a href="/">Home</a></li>
         <li><a href="addtodb">Add item to the database</a></li>
-        <li><a href="neworder">Create a new order</a></li>
+        <li><a href="startOrder">Create a new order</a></li>
     </ul>
 </nav>
+
+<footer th:fragment="footer">
+	<!-- TODO put logic to display message here? -->
+	<!-- <div th:if="${msg} != '' "> -->
+		<span th:text="${msg}">
+		</span>
+	<!-- </div -->
+</footer>
 
 </body>
 </html>

@@ -18,6 +18,9 @@ import com.gfike.SelfCheckoutSim.models.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
+
+//also contains routes for error and index
+
 @Controller
 public class AddToDbController {
 	@Autowired
