@@ -43,6 +43,6 @@ public class EditCartController {
 		
 		//model.addAttribute("test", test);
 		model.addAttribute("msg", "item was added");
-		return "redirect:startOrder";
+		return "redirect:editCart";
 	}
 }
