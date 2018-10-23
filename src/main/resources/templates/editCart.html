@@ -7,7 +7,7 @@
 
 <body>
 	<div th:replace="template :: navigation"></div>
-	<form method="post">
+	<form method="post" action="add">
 		Select an item from the list: <input list="allItems" id="shelf"
 			name="shelf" />
 		<datalist id="allItems">
@@ -17,9 +17,18 @@
 		<br>
 		<button type="submit">Add Item to Cart</button>
 	</form>
-	<!-- 
-	<div th:if="${test != null}" th:text="Yes, variable exists!">I wonder, if variable exists...</div>
-	 -->
+	
+	<form method="post" action="remove">
+		Items in cart:
+		<table>
+			<tr th:each="item: ${cart}">
+			<td th:text="item.name">
+			<input type="checkbox" th:checked="${user.active}" th:value="item.id"/>
+			</td>
+			</tr>
+		</table>
+	</form>
+
 	
 </body>
 <footer th:replace="template :: footer"></footer>

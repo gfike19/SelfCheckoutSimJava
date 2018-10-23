@@ -20,29 +20,43 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 @Controller
 public class EditCartController {
-	
-	@Autowired
-	ItemDao itemDao;
+
+    @Autowired
+    protected ItemDao itemDao;
 	
 	@RequestMapping(value = "/startOrder",method = RequestMethod.GET)
-	public String editCartGet(Model model){
+	public String editCartGet(Model model, HttpSession session){
 		List<Item> items = itemDao.findAll();
 		model.addAttribute("items", items);
-		//Object test = null;
-		//model.addAttribute("test", test);
+		try {
+			List<Item> cart = (List<Item>) session.getAttribute("cart");
+            model.addAttribute("cart",cart);
+		} catch (Exception e) {
+			List<Item> cart = null;
+			model.addAttribute("cart",cart);
+		}
+		
 		return "editCart";
 	}
 	
 	@RequestMapping(value = "/startOrder",method = RequestMethod.POST)
-	public String editCartPost (Model model, ServletRequest request) {
+	public String editCartPost (Model model, ServletRequest request, HttpSession session) {
 		int id = Integer.parseInt(request.getParameter("shelf"));
 		String action = request.getParameter("action");
-		List <Item> cart = null;
 		
-		Item test = itemDao.findById(id);
+		if (action.equals("add")) {
+			List<Item> cart = null;
+			Item i = itemDao.findById(id);
+			cart.add(i);
+			session.setAttribute("cart", cart);
+			model.addAttribute("msg", i.getName() + "item was added to the cart!");
+		}
+//
+//		if (action == "remove") {
+//
+//		}
 		
-		//model.addAttribute("test", test);
-		model.addAttribute("msg", "item was added");
-		return "redirect:editCart";
+		
+		return "redirect:startOrder";
 	}
 }
