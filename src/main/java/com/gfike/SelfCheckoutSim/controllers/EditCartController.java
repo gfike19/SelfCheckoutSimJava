@@ -22,41 +22,52 @@ import org.springframework.dao.DataIntegrityViolationException;
 public class EditCartController {
 
     @Autowired
-    protected ItemDao itemDao;
+    public ItemDao itemDao;
 	
 	@RequestMapping(value = "/startOrder",method = RequestMethod.GET)
 	public String editCartGet(Model model, HttpSession session){
-		List<Item> items = itemDao.findAll();
+
+        String msg = (String)session.getAttribute("msg");
+        model.addAttribute("msg", msg);
+
+	    List<Item> items = itemDao.findAll();
 		model.addAttribute("items", items);
 		try {
 			List<Item> cart = (List<Item>) session.getAttribute("cart");
             model.addAttribute("cart",cart);
 		} catch (Exception e) {
-			List<Item> cart = null;
-			model.addAttribute("cart",cart);
+			model.addAttribute("cart","");
 		}
-		
+
 		return "editCart";
 	}
-	
-	@RequestMapping(value = "/startOrder",method = RequestMethod.POST)
+
+	@RequestMapping(value = "/editCart",params = "Add to Cart", method = RequestMethod.POST)
 	public String editCartPost (Model model, ServletRequest request, HttpSession session) {
-		int id = Integer.parseInt(request.getParameter("shelf"));
-		String action = request.getParameter("action");
-		
-		if (action.equals("add")) {
-			List<Item> cart = null;
-			Item i = itemDao.findById(id);
-			cart.add(i);
-			session.setAttribute("cart", cart);
-			model.addAttribute("msg", i.getName() + "item was added to the cart!");
-		}
-//
-//		if (action == "remove") {
-//
-//		}
-		
-		
-		return "redirect:startOrder";
-	}
+
+        int id = Integer.parseInt(request.getParameter("shelf"));
+        String action = request.getParameter("action");
+        String msg = "";
+        List<Item> cart;
+
+        try {
+            cart = (List<Item>) session.getAttribute("cart");
+
+        } catch (Exception e) {
+            if (action == "Add Item to Cart") {
+                cart = (List<Item>) session.getAttribute("cart");
+                Item i = itemDao.findById(id);
+                cart.add(i);
+                session.setAttribute("cart", cart);
+                msg = "Item has been added to cart!";
+            }
+        }
+
+
+
+        session.setAttribute("msg",msg);
+        model.addAttribute("msg", msg);
+        return "redirect:startorder";
+    }
+
 }
