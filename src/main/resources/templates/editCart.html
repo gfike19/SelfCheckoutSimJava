@@ -7,7 +7,7 @@
 
 <body>
 	<div th:replace="template :: navigation"></div>
-    <form method="post" action="/editCart">
+    <form method="post" action="/addItem">
         Select an item from the list:
         <input list="allItems" id="shelf" name="shelf" />
         <datalist id="allItems">
@@ -17,8 +17,10 @@
         <br>
         <input type="submit" name="action" value="Add to Cart"/>
         <br>
+    </form>
+
+    <form method="post" action="/removeItem">
         Select an item from the cart to remove it:
-        Select an item from the list:
         <input list="cust" id="cart" name="cart" />
         <datalist id="cust">
             <option th:each="item : ${cart}" th:text="${item.name}"
