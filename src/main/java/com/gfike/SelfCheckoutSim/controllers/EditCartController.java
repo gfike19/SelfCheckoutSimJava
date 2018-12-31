@@ -1,4 +1,5 @@
 package com.gfike.SelfCheckoutSim.controllers;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletRequest;
@@ -24,7 +25,7 @@ public class EditCartController {
     @Autowired
     public ItemDao itemDao;
 	
-	@RequestMapping(value = {"/startOrder", "/addItem", "/removeItem"},method = RequestMethod.GET)
+	@RequestMapping(value = {"/startOrder", "/addItem", "/removeItem", "/editCart"},method = RequestMethod.GET)
 	public String editCartGet(Model model, HttpSession session){
 
         String msg = (String)session.getAttribute("msg");
@@ -32,10 +33,13 @@ public class EditCartController {
 
 	    List<Item> items = itemDao.findAll();
 		model.addAttribute("items", items);
+
 		try {
 			List<Item> cart = (List<Item>) session.getAttribute("cart");
             model.addAttribute("cart",cart);
 		} catch (Exception e) {
+		    List<Item> cart = new ArrayList<Item>();
+		    session.setAttribute("cart", cart);
 			model.addAttribute("cart","");
 		}
 
@@ -47,22 +51,23 @@ public class EditCartController {
 
         int id = Integer.parseInt(request.getParameter("shelf"));
         String msg = "";
-        List<Item> cart;
+        List<Item> cart = (List<Item>) session.getAttribute("cart");
 
-        try {
-            cart = (List<Item>) session.getAttribute("cart");
 
-        } catch (Exception e) {
-            cart = (List<Item>) session.getAttribute("cart");
-            Item i = itemDao.findById(id);
-            cart.add(i);
-            session.setAttribute("cart", cart);
-            msg = "Item has been added to cart!";
-        }
+//        try {
+//            cart = (List<Item>) session.getAttribute("cart");
+//
+//        } catch (Exception e) {
+//            cart = new ArrayList<Item>();
+//        }
 
+        Item i = itemDao.findById(id);
+        cart.add(i);
+        session.setAttribute("cart", cart);
+        msg = "Item has been added to cart!";
         session.setAttribute("msg",msg);
         model.addAttribute("msg", msg);
-        return "redirect:startorder";
+        return "redirect:startOrder";
     }
 
     @RequestMapping(value="/removeItem", method=RequestMethod.POST)
@@ -77,7 +82,7 @@ public class EditCartController {
 
         session.setAttribute("msg",msg);
         model.addAttribute("msg", msg);
-        return "redirect:startorder";
+        return "redirect:startOrder";
     }
 
 }
