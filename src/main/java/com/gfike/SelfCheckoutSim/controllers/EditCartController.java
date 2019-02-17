@@ -24,65 +24,42 @@ public class EditCartController {
 
     @Autowired
     public ItemDao itemDao;
-	
-	@RequestMapping(value = {"/startOrder", "/addItem", "/removeItem", "/editCart"},method = RequestMethod.GET)
-	public String editCartGet(Model model, HttpSession session){
+
+    @RequestMapping(value = "/editCart",method = RequestMethod.GET)
+    public String editCartGet(Model model, HttpSession session){
 
         String msg = (String)session.getAttribute("msg");
         model.addAttribute("msg", msg);
 
-	    List<Item> items = itemDao.findAll();
-		model.addAttribute("items", items);
+        List<Item> items = itemDao.findAll();
+        model.addAttribute("items", items);
 
-		try {
-			List<Item> cart = (List<Item>) session.getAttribute("cart");
+        try {
+            ArrayList<Item> cart = (ArrayList<Item>) session.getAttribute("cart");
             model.addAttribute("cart",cart);
-		} catch (Exception e) {
-		    List<Item> cart = new ArrayList<Item>();
-		    session.setAttribute("cart", cart);
-			model.addAttribute("cart","");
-		}
+        } catch (Exception e) {
+            ArrayList<Item> cart = new ArrayList<Item>();
+            session.setAttribute("cart", cart);
+            model.addAttribute("cart","");
+        }
 
-		return "editCart";
-	}
+        return "editCart";
+    }
 
-	@RequestMapping(value = "/addItem", method = RequestMethod.POST)
-	public String addItem (Model model, ServletRequest request, HttpSession session) {
+    @RequestMapping(value="/editCart", method = RequestMethod.POST)
+    public String addItem (Model model, ServletRequest request, HttpSession session) {
 
         int id = Integer.parseInt(request.getParameter("shelf"));
         String msg = "";
-        List<Item> cart = (List<Item>) session.getAttribute("cart");
-
-
-//        try {
-//            cart = (List<Item>) session.getAttribute("cart");
-//
-//        } catch (Exception e) {
-//            cart = new ArrayList<Item>();
-//        }
-
+        ArrayList<Item> cart = (ArrayList<Item>) session.getAttribute("cart");
         Item i = itemDao.findById(id);
         cart.add(i);
         session.setAttribute("cart", cart);
         msg = "Item has been added to cart!";
         session.setAttribute("msg",msg);
         model.addAttribute("msg", msg);
-        return "redirect:startOrder";
-    }
-
-    @RequestMapping(value="/removeItem", method=RequestMethod.POST)
-    public String removeItem (Model model, ServletRequest request, HttpSession session) {
-
-        int id = Integer.parseInt(request.getParameter("cart"));
-        List<Item> cart = (List<Item>) session.getAttribute("cart");
-        Item i = itemDao.findById(id);
-        cart.remove(i);
-        session.setAttribute("cart", cart);
-        String msg = "Item has been removed from the cart.";
-
-        session.setAttribute("msg",msg);
-        model.addAttribute("msg", msg);
-        return "redirect:startOrder";
+        return "editCart";
+//        return "test";
     }
 
 }

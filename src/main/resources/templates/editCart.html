@@ -7,28 +7,28 @@
 
 <body>
 	<div th:replace="template :: navigation"></div>
-    <form method="post" action="/addItem">
+    <form method="POST">
         Select an item from the list:
         <input list="allItems" id="shelf" name="shelf" />
         <datalist id="allItems">
         <option th:each="item : ${items}" th:text="${item.name}"
-        th:value="${item.uid}" />
+        th:value="${item.uid}"></option>
         </datalist>
         <br>
-        <button type="submit">Add to Cart</button>
+        <button type="submit">Add Item to Cart</button>
         <br>
     </form>
 
-    <form method="post" action="/removeItem">
-        Select an item from the cart to remove it:
-        <input list="cust" id="cart" name="cart" />
-        <datalist id="cust">
-            <option th:each="item : ${cart}" th:text="${item.name}"
-                    th:value="${item.uid}" />
-        </datalist>
-        <br>
-        <button type="submit">Remove From Cart</button>
-    </form>
+    <!--<form method="post" action="/removeItem">-->
+        <!--Select an item from the cart to remove it:-->
+        <!--<input list="cust" id="cart" name="cart" />-->
+        <!--<datalist id="cust">-->
+            <!--<option th:each="item : ${cart}" th:text="${item.name}"-->
+                    <!--th:value="${item.uid}"></option>-->
+        <!--</datalist>-->
+        <!--<br>-->
+        <!--<button type="submit">Remove From Cart</button>-->
+    <!--</form>-->
 
 </body>
 <footer th:replace="template :: footer"></footer>
