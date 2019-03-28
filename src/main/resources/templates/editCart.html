@@ -7,7 +7,7 @@
 
 <body>
 	<div th:replace="template :: navigation"></div>
-    <form method="POST">
+    <form method="post">
         Select an item from the list:
         <input list="allItems" id="shelf" name="shelf" />
         <datalist id="allItems">
@@ -29,6 +29,12 @@
         <!--<br>-->
         <!--<button type="submit">Remove From Cart</button>-->
     <!--</form>-->
+
+<table>
+    <tr th:each="item : ${cart}">
+        <td th:text="${item.name}"></td>
+    </tr>
+</table>
 
 </body>
 <footer th:replace="template :: footer"></footer>

@@ -87,9 +87,11 @@ public class AddToDbController {
 		session.setAttribute("msg", msg);
 		return "redirect:addtodb";
 	}
-	
-	
-	
+
+	@RequestMapping(value="/test", method = RequestMethod.GET)
+	public String test () {
+		return "test";
+	}
 	
 	@RequestMapping(value="/error", method = RequestMethod.GET)
 	public String error () {
