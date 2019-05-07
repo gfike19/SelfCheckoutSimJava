@@ -18,21 +18,14 @@
         <button type="submit">Add Item to Cart</button>
         <br>
     </form>
-
-    <!--<form method="post" action="/removeItem">-->
-        <!--Select an item from the cart to remove it:-->
-        <!--<input list="cust" id="cart" name="cart" />-->
-        <!--<datalist id="cust">-->
-            <!--<option th:each="item : ${cart}" th:text="${item.name}"-->
-                    <!--th:value="${item.uid}"></option>-->
-        <!--</datalist>-->
-        <!--<br>-->
-        <!--<button type="submit">Remove From Cart</button>-->
-    <!--</form>-->
+    <!--TODO add actions-->
 <table>
     <th>Items currently in cart: </th>
     <tr th:each="item : ${cart}">
-        <td th:text="${item.name}"></td>
+        <td>
+            <input type="checkbox" value="${item.uid}" name="markedItem" id="markedItem"/>
+            <label for="markedItem" th:text="${item.name}"></label>
+        </td>
     </tr>
 </table>
 
