@@ -35,7 +35,7 @@ public class AddToDbController {
 	}
 	
 	
-	@RequestMapping(value= {"/addtodb", "redirect:addtodb"}, method = RequestMethod.GET)
+	@RequestMapping(value="/addtodb", method = RequestMethod.GET)
 	public String CreateNewItemGet (HttpSession session, Model model) {
 		
 		if (session.getAttribute("msg") != "") {
@@ -85,13 +85,13 @@ public class AddToDbController {
 		itemDao.save(i);
 		String msg = "Item " + name + " has been successfully added to the database!";
 		session.setAttribute("msg", msg);
-		return "redirect:addtodb";
+		return "redirect:/addtodb";
 	}
 
-	@RequestMapping(value="/test", method = RequestMethod.GET)
-	public String test () {
-		return "test";
-	}
+//	@RequestMapping(value="/test", method = RequestMethod.GET)
+//	public String test () {
+//		return "test";
+//	}
 	
 	@RequestMapping(value="/error", method = RequestMethod.GET)
 	public String error () {

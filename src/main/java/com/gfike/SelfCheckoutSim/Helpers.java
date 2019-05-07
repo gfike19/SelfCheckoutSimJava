@@ -1,7 +1,7 @@
 package com.gfike.SelfCheckoutSim;
 
-public abstract class Helpers {
-	
+public class Helpers {
+
 	public static String createPlu (String input) {
 		String plu = "";
 					

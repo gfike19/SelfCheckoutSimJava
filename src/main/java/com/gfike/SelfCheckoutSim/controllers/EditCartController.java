@@ -41,9 +41,9 @@ public class EditCartController {
             cart.add(i);
         }
         else {
+            ArrayList<Item> cart = new ArrayList<>();
             int id = Integer.parseInt(request.getParameter("shelf"));
             Item i = itemDao.findById(id);
-            ArrayList<Item> cart = new ArrayList<>();
             cart.add(i);
             session.setAttribute("cart", cart);
             model.addAttribute("cart", cart);

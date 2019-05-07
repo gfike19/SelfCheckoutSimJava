@@ -29,8 +29,8 @@
         <!--<br>-->
         <!--<button type="submit">Remove From Cart</button>-->
     <!--</form>-->
-
 <table>
+    <th>Items currently in cart: </th>
     <tr th:each="item : ${cart}">
         <td th:text="${item.name}"></td>
     </tr>
