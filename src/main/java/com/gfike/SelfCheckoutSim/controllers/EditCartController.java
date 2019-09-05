@@ -32,7 +32,7 @@ public class EditCartController {
     }
     //TODO work on noting if an item has duplicates
     //TODO add validation
-    @RequestMapping(value="/editCart", method = RequestMethod.POST)
+    @RequestMapping(value="/editCart", params="add", method = RequestMethod.POST)
     public String addItem (Model model, ServletRequest request, HttpSession session) {
 
         if (session.getAttribute("cart") != null) {
