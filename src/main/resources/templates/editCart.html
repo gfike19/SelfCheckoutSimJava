@@ -15,20 +15,21 @@
         th:value="${item.uid}"></option>
         </datalist>
         <br>
-        <input type = "submit" name = "add" value="Add Items to Cart"/>
+        <input type = "submit" name = "add" value="Add Item to Cart"/>
         <br>
     </form>
-    <!--TODO add actions-->
-<table>
-    <th>Items currently in cart: </th>
-    <tr th:each="item : ${cart}">
-        <td>
-            <input type="checkbox" value="${item.uid}" name="markedItem" id="markedItem"/>
-            <label for="markedItem" th:text="${item.name}"></label>
-        </td>
-    </tr>
-</table>
-
+    <form method="post">
+        <table>
+            <th>Items currently in cart: </th>
+            <tr th:each="item : ${cart}">
+                <td>
+                    <input type="checkbox" th:value="${item.uid}" name="markedItem" id="markedItem"/>
+                    <label for="markedItem" th:text="${item.name}"></label>
+                </td>
+            </tr>
+        </table>
+        <input type = "submit" name = "remove" value="Remove Items From Cart"/>
+    </form>
 </body>
 <footer th:replace="template :: footer"></footer>
 </html>
