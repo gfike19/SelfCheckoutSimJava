@@ -6,17 +6,23 @@ import java.util.stream.Collectors;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import com.gfike.SelfCheckoutSim.models.Cart;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import com.gfike.SelfCheckoutSim.daos.ItemDao;
 import com.gfike.SelfCheckoutSim.models.Item;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+//@SessionAttributes("cart")
 public class EditCartController {
+
+//    @ModelAttribute("cart")
+//    public Cart cart() {
+//        return new Cart();
+//    }
 
     @Autowired
     public ItemDao itemDao;
