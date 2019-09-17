@@ -13,27 +13,30 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.gfike.SelfCheckoutSim.daos.ItemDao;
 import com.gfike.SelfCheckoutSim.models.Item;
+import com.gfike.SelfCheckoutSim.models.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
-//@SessionAttributes("cart")
+@SessionAttributes("cart")
 public class EditCartController {
 
-//    @ModelAttribute("cart")
-//    public Cart cart() {
-//        return new Cart();
-//    }
+    @ModelAttribute("cart")
+    public Cart cart() {
+        return new Cart();
+    }
 
     @Autowired
     public ItemDao itemDao;
 // doesn't work
 //    @RequestMapping(value ="/editCart",params={"","add"}, method = RequestMethod.GET)
 @RequestMapping(value ="/editCart", method = RequestMethod.GET)
-    public String editCartGet(Model model, HttpSession session){
+    public String editCartGet(Model model, @ModelAttribute("cart") Cart cart, HttpSession session){
 
-        if (session.getAttribute("cart") != null) {
-            ArrayList<Item> cart = (ArrayList<Item>)session.getAttribute("cart");
-            model.addAttribute("cart", cart);
+        if (cart == null) {
+            cart = new Cart();
+        }
+        else {
+            model.addAttribute("cart", cart.getItems());
         }
 
         List<Item> items = itemDao.findAll();
@@ -63,22 +66,18 @@ public class EditCartController {
     //TODO work on noting if an item has duplicates
     //TODO add validation
     @RequestMapping(value="/editCart", params="add", method = RequestMethod.POST)
-    public String addItem (Model model, ServletRequest request, HttpSession session) {
-        Item i;
-        ArrayList<Item> cart;
+    public String addItem (final Model model, @ModelAttribute Cart cart, ServletRequest request, HttpSession session) {
         int id = Integer.parseInt(request.getParameter("shelf"));
-        i = itemDao.findById(id);
+        Item i = itemDao.findById(id);
 
-        if (session.getAttribute("cart") != null) {
-            cart = (ArrayList<Item>)session.getAttribute("cart");
+        if (cart == null) {
+            cart = new Cart();
         }
         else {
-            cart = new ArrayList<>();
+            cart.addItem(i);
+            model.addAttribute("cart", cart.getItems());
         }
 
-        cart.add(i);
-        session.setAttribute("cart", cart);
-        model.addAttribute("cart", cart);
         String msg = i.getName() + " has been added to the cart!";
 
         session.setAttribute("msg", msg);
