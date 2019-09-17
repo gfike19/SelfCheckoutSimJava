@@ -32,12 +32,20 @@ public class EditCartController {
 @RequestMapping(value ="/editCart", method = RequestMethod.GET)
     public String editCartGet(Model model, @ModelAttribute("cart") Cart cart, HttpSession session){
 
-        if (cart == null) {
-            cart = new Cart();
-        }
-        else {
-            model.addAttribute("cart", cart.getItems());
-        }
+//        if (cart == null) {
+//            cart = new Cart();
+//        }
+//        else {
+//            model.addAttribute("cart", cart.getItems());
+//        }
+
+    try {
+        ArrayList<Item> cartItems = cart.getItems();
+        model.addAttribute("cart", cartItems);
+    } catch (Exception e){
+        cart = new Cart();
+        model.addAttribute("cart", cart.getItems());
+    }
 
         List<Item> items = itemDao.findAll();
         model.addAttribute("items", items);
