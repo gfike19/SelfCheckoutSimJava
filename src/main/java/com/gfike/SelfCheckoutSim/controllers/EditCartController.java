@@ -1,51 +1,39 @@
 package com.gfike.SelfCheckoutSim.controllers;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.gfike.SelfCheckoutSim.models.Cart;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.gfike.SelfCheckoutSim.daos.ItemDao;
 import com.gfike.SelfCheckoutSim.models.Item;
-import com.gfike.SelfCheckoutSim.models.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
-@SessionAttributes("cart")
 public class EditCartController {
-
-    @ModelAttribute("cart")
-    public Cart cart() {
-        return new Cart();
-    }
 
     @Autowired
     public ItemDao itemDao;
-// doesn't work
-//    @RequestMapping(value ="/editCart",params={"","add"}, method = RequestMethod.GET)
+
 @RequestMapping(value ="/editCart", method = RequestMethod.GET)
-    public String editCartGet(Model model, @ModelAttribute("cart") Cart cart, HttpSession session){
+    public String editCartGet(Model model,  HttpSession session){
 
-//        if (cart == null) {
-//            cart = new Cart();
-//        }
-//        else {
-//            model.addAttribute("cart", cart.getItems());
-//        }
+        ArrayList<Item> cart;
 
-    try {
-        ArrayList<Item> cartItems = cart.getItems();
-        model.addAttribute("cart", cartItems);
-    } catch (Exception e){
-        cart = new Cart();
-        model.addAttribute("cart", cart.getItems());
-    }
+        if (session.getAttribute("cart") != null){
+            cart = (ArrayList<Item>)session.getAttribute("cart");
+            session.removeAttribute("cart");
+        }
+        else{
+            cart = new ArrayList<Item>();
+        }
+
+        model.addAttribute("cart", cart);
+        session.setAttribute("cart", cart);
 
         List<Item> items = itemDao.findAll();
         model.addAttribute("items", items);
@@ -54,37 +42,26 @@ public class EditCartController {
         model.addAttribute("msg", msg);
         return "editCart";
     }
-    // doesn't work
-//    @RequestMapping(value ="/editCart", params="remove", method = RequestMethod.GET)
-//    public String removeItemGet(Model model, HttpSession session){
-//
-//        if (session.getAttribute("cart") != null) {
-//            ArrayList<Item> cart = (ArrayList<Item>)session.getAttribute("cart");
-//            model.addAttribute("cart", cart);
-//            session.removeAttribute("cart");
-//        }
-//
-//        List<Item> items = itemDao.findAll();
-//        model.addAttribute("items", items);
-//
-//        String msg = (String)session.getAttribute("msg");
-//        model.addAttribute("msg", msg);
-//        return "editCart";
-//    }
+
     //TODO work on noting if an item has duplicates
     //TODO add validation
     @RequestMapping(value="/editCart", params="add", method = RequestMethod.POST)
-    public String addItem (final Model model, @ModelAttribute Cart cart, ServletRequest request, HttpSession session) {
+    public String addItem (ServletRequest request, HttpSession session, Model model) {
+        ArrayList<Item> cart;
         int id = Integer.parseInt(request.getParameter("shelf"));
         Item i = itemDao.findById(id);
 
-        if (cart == null) {
-            cart = new Cart();
+        if (session.getAttribute("cart") != null){
+            cart = (ArrayList<Item>)session.getAttribute("cart");
+            session.removeAttribute("cart");
         }
-        else {
-            cart.addItem(i);
-            model.addAttribute("cart", cart.getItems());
+        else{
+            cart = new ArrayList<Item>();
         }
+
+        cart.add(i);
+        model.addAttribute("cart", cart);
+        session.setAttribute("cart", cart);
 
         String msg = i.getName() + " has been added to the cart!";
 
@@ -105,7 +82,7 @@ public class EditCartController {
         if (session.getAttribute("cart") != null) {
             cart = (ArrayList<Item>)session.getAttribute("cart");
             // doesn't work
-//            session.removeAttribute("cart");
+            session.removeAttribute("cart");
         }
         else {
             cart = new ArrayList<>();
