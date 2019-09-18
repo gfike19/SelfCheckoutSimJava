@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import com.gfike.SelfCheckoutSim.daos.ItemDao;
 import com.gfike.SelfCheckoutSim.models.Item;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
 public class EditCartController {
@@ -26,7 +27,6 @@ public class EditCartController {
 
         if (session.getAttribute("cart") != null){
             cart = (ArrayList<Item>)session.getAttribute("cart");
-            session.removeAttribute("cart");
         }
         else{
             cart = new ArrayList<Item>();
@@ -44,16 +44,16 @@ public class EditCartController {
     }
 
     //TODO work on noting if an item has duplicates
-    //TODO add validation
+    //TODO add validation,
     @RequestMapping(value="/editCart", params="add", method = RequestMethod.POST)
-    public String addItem (ServletRequest request, HttpSession session, Model model) {
+    public String addItem (ServletRequest request, HttpSession session, Model model,
+    SessionStatus sessionStatus) {
         ArrayList<Item> cart;
         int id = Integer.parseInt(request.getParameter("shelf"));
         Item i = itemDao.findById(id);
 
         if (session.getAttribute("cart") != null){
             cart = (ArrayList<Item>)session.getAttribute("cart");
-            session.removeAttribute("cart");
         }
         else{
             cart = new ArrayList<Item>();
@@ -67,51 +67,47 @@ public class EditCartController {
 
         session.setAttribute("msg", msg);
         model.addAttribute("msg", msg);
+        // doesn't work
+//        sessionStatus.setComplete();
         return "redirect:/editCart";
     }
 
     @RequestMapping(value="/editCart", params="remove", method = RequestMethod.POST)
     public String removeItems (Model model, HttpServletRequest request, HttpSession session,
-    @RequestParam List<String> markedItem) {
+    @RequestParam List<String> markedItem, SessionStatus sessionStatus) {
         ArrayList<Item> cart;
         // turns list of strings to list of Integers
         // doesn't really work here though :(
 //        List<Integer> itemIds = markedItem.stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList());
-        //List<String> itemNames = null;
         /* TODO create error msg for when they are trying to remove when cart is empty */
         if (session.getAttribute("cart") != null) {
             cart = (ArrayList<Item>)session.getAttribute("cart");
             // doesn't work
-            session.removeAttribute("cart");
+//            session.removeAttribute("cart");
         }
         else {
             cart = new ArrayList<>();
         }
 
         String msg = "";
-        // tried remapping cart in session to a new cart, didn't work
-        try {
-            for(String s : markedItem){
-                int i = Integer.parseInt(s);
-                Item itemToRemove = itemDao.findById(i);
-
-                if(cart.contains(itemToRemove)){
-                    cart.remove(itemToRemove);
-                }
+        List<Integer> idList = null;
+        // TODO #1 check to see if items can be found from input received
+        for(String s : markedItem){
+            int id = Integer.parseInt(s);
+            Item item = itemDao.findById(id);
+            if (idList.contains(id)){
+                msg += (item.getName() + " has been found!");
             }
-
-            msg = "Current cart size: " + cart.size();
-
-        } catch(Exception e) {
-            msg = e.toString();
         }
-        // doesn't work
-//        session.removeAttribute("cart");
+
         session.setAttribute("cart", cart);
         model.addAttribute("cart", cart);
 
         model.addAttribute("msg", msg);
         session.setAttribute("msg", msg);
+
+        // doesn't work
+//        sessionStatus.setComplete();
         return "redirect:/editCart";
     }
 }
