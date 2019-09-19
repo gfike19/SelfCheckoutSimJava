@@ -76,6 +76,7 @@ public class EditCartController {
     public String removeItems (Model model, HttpServletRequest request, HttpSession session,
     @RequestParam List<String> markedItem, SessionStatus sessionStatus) {
         ArrayList<Item> cart;
+        String msg = "";
         // turns list of strings to list of Integers
         // doesn't really work here though :(
 //        List<Integer> itemIds = markedItem.stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList());
@@ -85,10 +86,9 @@ public class EditCartController {
         }
         else {
             cart = new ArrayList<>();
+            msg += "Cart is empty! Please add an item before proceeding.";
+//            return "redirect:/editCart";
         }
-
-        String msg = "";
-        // TODO #1 check to see if items can be found from input received
 
         try {
 
