@@ -22,7 +22,8 @@ public class EditCartController {
     @Autowired
     public ItemDao itemDao;
 
-@RequestMapping(value ="/editCart", method = RequestMethod.GET)
+@RequestMapping(value ={"/editCart", "/add", "/remove", "/editCart/*", "/editCart/**",
+"/remove/*"}, method = RequestMethod.GET)
     public String editCartGet(Model model,  HttpSession session){
 
         ArrayList<Item> cart;
@@ -46,20 +47,20 @@ public class EditCartController {
     }
 
     //TODO work on noting if an item has duplicates
-    //TODO add validation,
     @RequestMapping(value="/editCart", params="add", method = RequestMethod.POST)
     public String addItem (ServletRequest request, HttpSession session, Model model,
     SessionStatus sessionStatus) {
-        ArrayList<Item> cart;
+        ArrayList<Item> cart= (ArrayList<Item>)session.getAttribute("cart");
+
+        if (request.getParameter("shelf") == null || request.getParameter("shelf").isEmpty()){
+            String msg = "Select an item to add to the cart!";
+            model.addAttribute("msg", msg);
+            session.setAttribute("msg", msg);
+            return "redirect:/editCart";
+        }
+
         int id = Integer.parseInt(request.getParameter("shelf"));
         Item i = itemDao.findById(id);
-
-        if (session.getAttribute("cart") != null){
-            cart = (ArrayList<Item>)session.getAttribute("cart");
-        }
-        else{
-            cart = new ArrayList<Item>();
-        }
 
         cart.add(i);
         model.addAttribute("cart", cart);
@@ -73,24 +74,18 @@ public class EditCartController {
     }
 
     @RequestMapping(value="/editCart", params="remove", method = RequestMethod.POST)
-    public String removeItems (Model model, HttpServletRequest request, HttpSession session,
-    @RequestParam List<String> markedItem, SessionStatus sessionStatus) {
-        ArrayList<Item> cart;
+    public String removeItems (@RequestParam(required = false) List<String> markedItem,Model model, HttpServletRequest request, HttpSession session,
+     SessionStatus sessionStatus) {
+        ArrayList<Item> cart = (ArrayList<Item>)session.getAttribute("cart");
         String msg = "";
-        // turns list of strings to list of Integers
-        // doesn't really work here though :(
-//        List<Integer> itemIds = markedItem.stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList());
-        /* TODO create error msg for when they are trying to remove when cart is empty */
-        if (session.getAttribute("cart") != null) {
-            cart = (ArrayList<Item>)session.getAttribute("cart");
-        }
-        else {
-            cart = new ArrayList<>();
-            msg += "Cart is empty! Please add an item before proceeding.";
-//            return "redirect:/editCart";
+
+        if(markedItem == null){
+            msg += "Cart is empty!";
+            model.addAttribute("msg", msg);
+            session.setAttribute("msg", msg);
+            return "redirect:/editCart";
         }
 
-        try {
 
             for(String s : markedItem){
                 int id = Integer.parseInt(s);
@@ -100,10 +95,6 @@ public class EditCartController {
                     }
                 }
             }
-        } catch(Exception e) {
-            msg += e.getMessage().toString();
-        }
-
 
         session.setAttribute("cart", cart);
         model.addAttribute("cart", cart);
