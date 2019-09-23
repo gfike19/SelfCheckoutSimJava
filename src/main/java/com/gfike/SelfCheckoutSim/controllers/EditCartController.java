@@ -22,8 +22,7 @@ public class EditCartController {
     @Autowired
     public ItemDao itemDao;
 
-@RequestMapping(value ={"/editCart", "/add", "/remove", "/editCart/*", "/editCart/**",
-"/remove/*"}, method = RequestMethod.GET)
+@RequestMapping(value ={"/editCart"}, method = RequestMethod.GET)
     public String editCartGet(Model model,  HttpSession session){
 
         ArrayList<Item> cart;
@@ -52,7 +51,7 @@ public class EditCartController {
     SessionStatus sessionStatus) {
         ArrayList<Item> cart= (ArrayList<Item>)session.getAttribute("cart");
 
-        if (request.getParameter("shelf") == null || request.getParameter("shelf").isEmpty()){
+        if (request.getParameter("shelf").isEmpty()){
             String msg = "Select an item to add to the cart!";
             model.addAttribute("msg", msg);
             session.setAttribute("msg", msg);

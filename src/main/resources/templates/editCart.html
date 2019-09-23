@@ -10,10 +10,10 @@
     <form method="post">
         Select an item from the list:
         <input list="allItems" id="shelf" name="shelf" />
-        <datalist id="allItems">
-        <option th:each="item : ${items}" th:text="${item.name}"
-        th:value="${item.uid}"></option>
-        </datalist>
+            <datalist id="allItems">
+                <option th:each="item : ${items}" th:label="${item.name}" th:value="${item.uid}">
+                </option>
+            </datalist>
         <br>
         <input type = "submit" name = "add" value="Add Item to Cart"/>
         <br>
