@@ -18,6 +18,11 @@
         <input type = "submit" name = "add" value="Add Item to Cart"/>
         <br>
     </form>
+
+    <form action="/checkout">
+        <button type="submit">Checkout</button>
+    </form>
+
     <form method="post">
         <table>
             <th>Items currently in cart: </th>
@@ -30,6 +35,7 @@
         </table>
         <input type = "submit" name = "remove" value="Remove Items From Cart"/>
     </form>
+
 </body>
 <footer th:replace="template :: footer"></footer>
 </html>

@@ -47,8 +47,7 @@ public class EditCartController {
 
     //TODO work on noting if an item has duplicates
     @RequestMapping(value="/editCart", params="add", method = RequestMethod.POST)
-    public String addItem (ServletRequest request, HttpSession session, Model model,
-    SessionStatus sessionStatus) {
+    public String addItem (ServletRequest request, HttpSession session, Model model) {
         ArrayList<Item> cart= (ArrayList<Item>)session.getAttribute("cart");
 
         if (request.getParameter("shelf").isEmpty()){
@@ -65,10 +64,6 @@ public class EditCartController {
         model.addAttribute("cart", cart);
         session.setAttribute("cart", cart);
 
-        String msg = i.getName() + " has been added to the cart!";
-
-        session.setAttribute("msg", msg);
-        model.addAttribute("msg", msg);
         return "redirect:/editCart";
     }
 

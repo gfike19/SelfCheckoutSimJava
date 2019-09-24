@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="template :: dochead"></head>
+<header>
+    <h1>Checkout Items</h1>
+</header>
+<body>
+    <div th:replace="template :: navigation"></div>
+
+    <form method="post">
+        Select item to scan:
+        <select name="scanner" id="scanner">
+            <option value="" disabled selected>--</option>
+            <option th:each="item : ${cart}"
+                    th:value="${item.uid}"
+                    th:text="${item.name}"></option>
+        </select>
+        <input type = "submit" name = "scan" value="Scan Item"/>
+    </form>
+
+    <b>Current Order</b>
+    <ul th:each="item : ${scanned}">
+        <li th:text="${item.name}"></li>
+    </ul>
+
+</body>
+<footer th:replace="template :: footer"></footer>
+</html>
