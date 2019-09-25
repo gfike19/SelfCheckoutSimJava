@@ -19,15 +19,33 @@
         <input type = "submit" name = "bag" value="Bag Item"/>
     </form>
 
-    <b>Current Order</b>
-    <ul th:each="item : ${scanned}">
-        <li th:text="${item}"></li>
-    </ul>
+    <table>
+        <tr>
+            <td><b>Current Order</b></td>
+        </tr>
+        <tr th:each="item : ${scanned}">
+            <td th:text="${item}"></td>
+        </tr>
+    </table>
 
-    <b>Items in Bag</b>
-    <ul th:each="item : ${bagged}">
-        <li th:text="${item}"></li>
-    </ul>
+    <table>
+        <tr>
+            <td><b>Items in Bag</b></td>
+        </tr>
+        <tr th:each="item : ${bagged}">
+            <td th:text="${item}"></td>
+        </tr>
+    </table>
+
+<!--    <b>Current Order</b>-->
+<!--    <ul th:each="item : ${scanned}">-->
+<!--        <li th:text="${item}"></li>-->
+<!--    </ul>-->
+
+<!--    <b>Items in Bag</b>-->
+<!--    <ul th:each="item : ${bagged}">-->
+<!--        <li th:text="${item}"></li>-->
+<!--    </ul>-->
 
 </body>
 <footer th:replace="template :: footer"></footer>
