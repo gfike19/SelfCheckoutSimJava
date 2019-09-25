@@ -19,8 +19,8 @@
     </form>
 
     <b>Current Order</b>
-    <ul th:each="item : ${scanned}">
-        <li th:text="${item.name}"></li>
+    <ul th:each="each : ${scanned}">
+        <li th:text="${each}"></li>
     </ul>
 
 </body>

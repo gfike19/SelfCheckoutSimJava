@@ -22,11 +22,25 @@ public class CheckoutController {
 
     @GetMapping
     public String checkoutGet(Model model, HttpSession session){
+        String msg;
+        if(session.getAttribute("cart") == null) {
+            msg = "Cart is empty!";
+            model.addAttribute("msg", msg);
+            session.setAttribute("msg", msg);
+            return "redirect:/editCart";
+        }
 
         ArrayList<Item> cart = (ArrayList<Item>)session.getAttribute("cart");
-        model.addAttribute("cart", cart);
 
-        String msg = (String) session.getAttribute("msg");
+        if(cart.size() == 0){
+            msg = "Cart is empty!";
+            model.addAttribute("msg", msg);
+            session.setAttribute("msg", msg);
+            return "redirect:/editCart";
+        }
+
+        model.addAttribute("cart", cart);
+        msg = (String) session.getAttribute("msg");
         model.addAttribute("msg", msg);
 
         if (session.getAttribute("scanned") != null){
