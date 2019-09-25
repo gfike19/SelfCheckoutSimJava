@@ -16,13 +16,26 @@ import java.util.ArrayList;
 @Controller
 @RequestMapping("checkout")
 public class CheckoutController {
-
+    /**
+     * TODO replicate it so that customers can try to rung out items not in db
+     */
     @Autowired
     ItemDao itemDao;
 
     @GetMapping
     public String checkoutGet(Model model, HttpSession session){
         String msg;
+
+        /**
+         * TODO refactoring needed here
+         */
+
+        boolean scannedOrBagged = true;
+
+        if(session.getAttribute("scanned") == null || session.getAttribute("bagged") == null){
+            scannedOrBagged = false;
+        }
+
         if(session.getAttribute("cart") == null) {
             msg = "Cart is empty!";
             model.addAttribute("msg", msg);
@@ -32,7 +45,7 @@ public class CheckoutController {
 
         ArrayList<Item> cart = (ArrayList<Item>)session.getAttribute("cart");
 
-        if(cart.size() == 0){
+        if(cart.size() == 0 && !scannedOrBagged){
             msg = "Cart is empty!";
             model.addAttribute("msg", msg);
             session.setAttribute("msg", msg);
@@ -48,14 +61,27 @@ public class CheckoutController {
             model.addAttribute("scanned", scanned);
         }
 
+        if (session.getAttribute("bagged") != null){
+            ArrayList<String> scanned = (ArrayList<String>)session.getAttribute("bagged");
+            model.addAttribute("bagged", scanned);
+        }
+
         return "checkout";
     }
 
     @PostMapping(params = "scan")
     public String scan (ServletRequest request, HttpSession session, Model model){
 
-        int id = Integer.parseInt(request.getParameter("scanner"));
+        int id = Integer.parseInt(request.getParameter("register"));
         Item i = itemDao.findById(id);
+
+        ArrayList<Item> cart = (ArrayList<Item>) session.getAttribute("cart");
+
+        for(int j = 0; j < cart.size(); j ++) {
+            if(cart.get(j).getUid() == id) {
+                cart.remove(j);
+            }
+        }
 
         ArrayList<String> scanned;
 
@@ -70,8 +96,37 @@ public class CheckoutController {
         session.setAttribute("scanned", scanned);
         model.addAttribute("scanned", scanned);
 
-//        model.addAttribute("msg", msg);
-//        session.setAttribute("msg", msg);
+        return "redirect:/checkout";
+    }
+
+    @PostMapping(params = "bag")
+    public String bag (ServletRequest request, HttpSession session, Model model){
+
+        int id = Integer.parseInt(request.getParameter("register"));
+        Item i = itemDao.findById(id);
+
+        ArrayList<Item> cart = (ArrayList<Item>) session.getAttribute("cart");
+
+        for(int j = 0; j < cart.size(); j ++) {
+            if(cart.get(j).getUid() == id) {
+                cart.remove(j);
+            }
+        }
+
+        ArrayList<String> bagged;
+
+        if(session.getAttribute("bagged") != null){
+            bagged = (ArrayList<String>) session.getAttribute("bagged");
+        }
+        else{
+            bagged = new ArrayList<String>();
+        }
+
+        bagged.add(i.getName());
+        session.setAttribute("bagged", bagged);
+        model.addAttribute("bagged", bagged);
+
+
 
         return "redirect:/checkout";
     }

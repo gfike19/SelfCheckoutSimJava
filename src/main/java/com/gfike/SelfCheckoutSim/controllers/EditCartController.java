@@ -19,6 +19,13 @@ import java.util.List;
 @Controller
 public class EditCartController {
 
+    /*
+    TODO add duplicate items indicator, needs number input and display of current item count in cart
+     */
+
+    /*
+    TODO remove items from all items list that have already been put in cart
+     */
     @Autowired
     public ItemDao itemDao;
 
@@ -45,7 +52,7 @@ public class EditCartController {
         return "editCart";
     }
 
-    //TODO work on noting if an item has duplicates
+
     @RequestMapping(value="/editCart", params="add", method = RequestMethod.POST)
     public String addItem (ServletRequest request, HttpSession session, Model model) {
         ArrayList<Item> cart= (ArrayList<Item>)session.getAttribute("cart");

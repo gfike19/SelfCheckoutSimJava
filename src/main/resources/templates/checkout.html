@@ -9,18 +9,24 @@
 
     <form method="post">
         Select item to scan:
-        <select name="scanner" id="scanner">
+        <select name="register" id="register">
             <option value="" disabled selected>--</option>
             <option th:each="item : ${cart}"
                     th:value="${item.uid}"
                     th:text="${item.name}"></option>
         </select>
         <input type = "submit" name = "scan" value="Scan Item"/>
+        <input type = "submit" name = "bag" value="Bag Item"/>
     </form>
 
     <b>Current Order</b>
-    <ul th:each="each : ${scanned}">
-        <li th:text="${each}"></li>
+    <ul th:each="item : ${scanned}">
+        <li th:text="${item}"></li>
+    </ul>
+
+    <b>Items in Bag</b>
+    <ul th:each="item : ${bagged}">
+        <li th:text="${item}"></li>
     </ul>
 
 </body>
