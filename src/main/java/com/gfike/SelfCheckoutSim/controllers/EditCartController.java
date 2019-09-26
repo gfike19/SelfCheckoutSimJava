@@ -14,6 +14,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -32,13 +33,13 @@ public class EditCartController {
 @RequestMapping(value ={"/editCart"}, method = RequestMethod.GET)
     public String editCartGet(Model model,  HttpSession session){
 
-        ArrayList<Item> cart;
+        HashMap<Item, Integer> cart;
 
         if (session.getAttribute("cart") != null){
-            cart = (ArrayList<Item>)session.getAttribute("cart");
+            cart = (HashMap<Item, Integer>)session.getAttribute("cart");
         }
         else{
-            cart = new ArrayList<Item>();
+            cart = new HashMap<Item, Integer>();
         }
 
         model.addAttribute("cart", cart);
@@ -55,7 +56,7 @@ public class EditCartController {
 
     @RequestMapping(value="/editCart", params="add", method = RequestMethod.POST)
     public String addItem (ServletRequest request, HttpSession session, Model model) {
-        ArrayList<Item> cart= (ArrayList<Item>)session.getAttribute("cart");
+        HashMap<Item, Integer> cart= (HashMap<Item, Integer>)session.getAttribute("cart");
 
         if (request.getParameter("shelf").isEmpty()){
             String msg = "Select an item to add to the cart!";
@@ -67,7 +68,7 @@ public class EditCartController {
         int id = Integer.parseInt(request.getParameter("shelf"));
         Item i = itemDao.findById(id);
 
-        cart.add(i);
+        cart.put(i, 1);
         model.addAttribute("cart", cart);
         session.setAttribute("cart", cart);
 
