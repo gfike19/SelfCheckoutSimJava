@@ -11,7 +11,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -71,6 +70,7 @@ public class EditCartController {
 
         return "redirect:/editCart";
     }
+    // @requestparam required = false is needed in the even the user doesn't select an item
     @PostMapping(params = "remove")
     public String removeItems (@RequestParam(required = false) List<String> markedItem,Model model, HttpServletRequest request, HttpSession session,
      SessionStatus sessionStatus) {
@@ -103,5 +103,33 @@ public class EditCartController {
 
         return "redirect:/editCart";
     }
+
+    @PostMapping(params = "inc")
+    public String inc(@RequestParam(required = false) List<String> markedItem,Model model, HttpServletRequest request, HttpSession session,
+                      SessionStatus sessionStatus){
+
+        HashMap<Item, Integer> cart = (HashMap<Item, Integer>)session.getAttribute("cart");
+        String msg = "";
+
+        for(String s : markedItem){
+            int id = Integer.parseInt(s);
+            for(Item i : cart.keySet()){
+                if(id == i.getUid()){
+                    int val = cart.get(i);
+                    val += 1;
+                    cart.replace(i, val);
+                }
+            }
+        }
+
+        session.setAttribute("cart", cart);
+        model.addAttribute("cart", cart);
+
+        model.addAttribute("msg", msg);
+        session.setAttribute("msg", msg);
+
+        return "redirect:/editCart";
+    }
+
 }
 
