@@ -105,26 +105,11 @@ public class EditCartController {
     }
 
     @PostMapping(params = "inc")
-    public String inc(@RequestParam(required = false) List<String> markedItem,Model model, HttpServletRequest request, HttpSession session,
+    public String inc(Model model, HttpServletRequest request, HttpSession session,
                       SessionStatus sessionStatus){
 
-        HashMap<Item, Integer> cart = (HashMap<Item, Integer>)session.getAttribute("cart");
-        String msg = "";
-
-        for(String s : markedItem){
-            int id = Integer.parseInt(s);
-            for(Item i : cart.keySet()){
-                if(id == i.getUid()){
-                    int val = cart.get(i);
-                    val += 1;
-                    cart.replace(i, val);
-                }
-            }
-        }
-
-        session.setAttribute("cart", cart);
-        model.addAttribute("cart", cart);
-
+        Object o = request.getParameter("plus");
+        String msg = o.toString();
         model.addAttribute("msg", msg);
         session.setAttribute("msg", msg);
 

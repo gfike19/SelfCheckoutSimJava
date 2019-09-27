@@ -22,6 +22,7 @@
     <form action="/checkout">
         <button type="submit">Checkout</button>
     </form>
+
     <form method="post">
         <table>
             <th>Items currently in cart: </th>
@@ -35,10 +36,14 @@
                 </td>
                 <td th:text="${entry.value}">
                 </td>
+                <td>
+                    <button name="inc" id="inc" onclick="inc.js">+</button>
+                </td>
             </tr>
         </table>
         <input type = "submit" name = "remove" value="Remove Items From Cart"/>
     </form>
+
 
 </body>
 <footer th:replace="template :: footer"></footer>
