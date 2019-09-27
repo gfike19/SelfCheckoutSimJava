@@ -5,9 +5,7 @@ import com.gfike.SelfCheckoutSim.models.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.ServletRequest;
@@ -18,11 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 
 @Controller
+@RequestMapping("editCart")
 public class EditCartController {
-
-    /*
-    TODO add duplicate items indicator, needs number input and display of current item count in cart
-     */
 
     /*
     TODO remove items from all items list that have already been put in cart
@@ -30,7 +25,9 @@ public class EditCartController {
     @Autowired
     public ItemDao itemDao;
 
-@RequestMapping(value ={"/editCart"}, method = RequestMethod.GET)
+// old way below
+//@RequestMapping(value ={"/editCart"}, method = RequestMethod.GET)
+    @GetMapping
     public String editCartGet(Model model,  HttpSession session){
 
         HashMap<Item, Integer> cart;
@@ -52,9 +49,9 @@ public class EditCartController {
         model.addAttribute("msg", msg);
         return "editCart";
     }
-
-
-    @RequestMapping(value="/editCart", params="add", method = RequestMethod.POST)
+    // old way below
+    //    @RequestMapping(value="/editCart", params="add", method = RequestMethod.POST)
+    @PostMapping(params = "add")
     public String addItem (ServletRequest request, HttpSession session, Model model) {
         HashMap<Item, Integer> cart= (HashMap<Item, Integer>)session.getAttribute("cart");
 
@@ -74,11 +71,11 @@ public class EditCartController {
 
         return "redirect:/editCart";
     }
-
-    @RequestMapping(value="/editCart", params="remove", method = RequestMethod.POST)
+    @PostMapping(params = "remove")
     public String removeItems (@RequestParam(required = false) List<String> markedItem,Model model, HttpServletRequest request, HttpSession session,
      SessionStatus sessionStatus) {
-        ArrayList<Item> cart = (ArrayList<Item>)session.getAttribute("cart");
+
+        HashMap<Item, Integer> cart = (HashMap<Item, Integer>)session.getAttribute("cart");
         String msg = "";
 
         if(markedItem == null){
@@ -91,8 +88,8 @@ public class EditCartController {
 
             for(String s : markedItem){
                 int id = Integer.parseInt(s);
-                for(int i = 0; i < cart.size(); i ++) {
-                    if(cart.get(i).getUid() == id) {
+                for(Item i : cart.keySet()){
+                    if(id == i.getUid()){
                         cart.remove(i);
                     }
                 }

@@ -22,20 +22,21 @@
     <form action="/checkout">
         <button type="submit">Checkout</button>
     </form>
-    <!--Todo started work on displaying and being able to manipulate count of items in cart -->
     <form method="post">
         <table>
             <th>Items currently in cart: </th>
             <tr>
-                <td>Item Name</td> <td>Item Count</td> <td>Add/Remove</td>
+                <td>Item Name</td> <td>Item Count</td> <td>Increment/Decrement</td>
             </tr>
             <tr th:each="entry : ${cart}">
                 <td>
                     <input type="checkbox" th:value="${entry.key.uid}" name="markedItem" id="markedItem"/>
                     <label for="markedItem" th:text="${entry.key.name}"></label>
                 </td>
+                <td th:text="${entry.value}">
+                </td>
                 <td>
-
+                    <input type="submit" name="increment" value="+"/>
                 </td>
             </tr>
         </table>
