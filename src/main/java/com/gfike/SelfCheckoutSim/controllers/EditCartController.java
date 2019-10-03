@@ -12,7 +12,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("editCart")
@@ -71,45 +73,51 @@ public class EditCartController {
         return "redirect:/editCart";
     }
     // @requestparam required = false is needed in the even the user doesn't select an item
-    @PostMapping(params = "remove")
-    public String removeItems (@RequestParam(required = false) List<String> markedItem,Model model, HttpServletRequest request, HttpSession session,
-     SessionStatus sessionStatus) {
+    @PostMapping(params = "update")
+    public String updateCart (@RequestParam(required = false) List<String> markedItem,Model model,
+  HttpServletRequest request, HttpSession session,
+  @RequestParam(required = false) List<Integer> currCount) {
 
         HashMap<Item, Integer> cart = (HashMap<Item, Integer>)session.getAttribute("cart");
         String msg = "";
 
-        if(markedItem == null){
-            msg += "Cart is empty!";
-            model.addAttribute("msg", msg);
-            session.setAttribute("msg", msg);
-            return "redirect:/editCart";
-        }
+//        if(markedItem == null || currCount == null){
+//            msg += "No items selected!";
+//            model.addAttribute("msg", msg);
+//            session.setAttribute("msg", msg);
+//            return "redirect:/editCart";
+//        }
+//        else if (markedItem != null){
+//            for(String s : markedItem){
+//                int id = Integer.parseInt(s);
+//                for(Item i : cart.keySet()){
+//                    if(id == i.getUid()){
+//                        cart.remove(i);
+//                    }
+//                }
+//            }
+//        }
+        Object o = request.getParameter("itemId");
+
+        msg += o;
+//        else if(currCount != null){
+//            Iterator it = (Iterator) cart.entrySet();
+//
+//            while(it.hasNext()){
+//                for(Integer i : currCount){
+//                    HashMap.Entry pair = (Map.Entry)it.next();
+//                    if(pair.getValue() != i){
+//                        pair.setValue(i);
+//                    }
+//                }
+//            }
+//        }
 
 
-            for(String s : markedItem){
-                int id = Integer.parseInt(s);
-                for(Item i : cart.keySet()){
-                    if(id == i.getUid()){
-                        cart.remove(i);
-                    }
-                }
-            }
 
         session.setAttribute("cart", cart);
         model.addAttribute("cart", cart);
 
-        model.addAttribute("msg", msg);
-        session.setAttribute("msg", msg);
-
-        return "redirect:/editCart";
-    }
-
-    @PostMapping(params = "inc")
-    public String inc(Model model, HttpServletRequest request, HttpSession session,
-                      SessionStatus sessionStatus){
-
-        Object o = request.getParameter("plus");
-        String msg = o.toString();
         model.addAttribute("msg", msg);
         session.setAttribute("msg", msg);
 

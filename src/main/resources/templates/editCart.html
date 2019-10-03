@@ -27,21 +27,22 @@
         <table>
             <th>Items currently in cart: </th>
             <tr>
-                <td>Item Name</td> <td>Item Count</td> <td>Increment/Decrement</td>
+            <tr><b>Check box to remove iem</b></tr>
+                <td>Item Name</td> <td>Item Count</td>
             </tr>
             <tr th:each="entry : ${cart}">
                 <td>
-                    <input type="checkbox" th:value="${entry.key.uid}" name="markedItem" id="markedItem"/>
+<!--                    <input type="checkbox" th:value="${entry.key.uid}" name="markedItem" id="markedItem"/>-->
+                    <input type="checkbox" name="markedItem" id="markedItem"/>
+
                     <label for="markedItem" th:text="${entry.key.name}"></label>
                 </td>
-                <td th:text="${entry.value}">
-                </td>
-                <td>
-                    <button name="inc" id="inc" onclick="inc.js">+</button>
+                <td><input type="hidden" name="itemId" id="itemId" th:valye="${entry.key.uid}"/>
+                    <input type="number" th:value="${entry.value}" name="currCount" id="currCount"/>
                 </td>
             </tr>
         </table>
-        <input type = "submit" name = "remove" value="Remove Items From Cart"/>
+        <input type = "submit" name = "update" value="Update Cart"/>
     </form>
 
 
