@@ -28,7 +28,7 @@
             <th>Items currently in cart: </th>
             <tr>
             <tr><b>Check box to remove iem</b></tr>
-                <td>Item Name</td> <td>Item Count</td>
+                <td>Item Name</td> <td>Item Count</td> <td>Increase/Decrease Amount</td>
             </tr>
             <tr th:each="entry : ${cart}">
                 <td>
@@ -37,8 +37,10 @@
 
                     <label for="markedItem" th:text="${entry.key.name}"></label>
                 </td>
-                <td><input type="hidden" name="itemId" id="itemId" th:valye="${entry.key.uid}"/>
-                    <input type="number" th:value="${entry.value}" name="currCount" id="currCount"/>
+                <td th:text="${entry.value}"></td>
+                <td>
+                    <input type="hidden" name="itemId" id="itemId" th:value="${entry.key.uid}"/>
+                    <input type="number" name="currCount" id="currCount"/>
                 </td>
             </tr>
         </table>

@@ -1,13 +1,10 @@
 package com.gfike.SelfCheckoutSim.controllers;
-
 import com.gfike.SelfCheckoutSim.daos.ItemDao;
 import com.gfike.SelfCheckoutSim.models.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
-
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -66,28 +63,24 @@ public class EditCartController {
         int id = Integer.parseInt(request.getParameter("shelf"));
         Item i = itemDao.findById(id);
 
-        cart.put(i, 1);
+        cart.putIfAbsent(i, 1);
+
         model.addAttribute("cart", cart);
         session.setAttribute("cart", cart);
 
         return "redirect:/editCart";
     }
-    // @requestparam required = false is needed in the even the user doesn't select an item
+    // @requestparam required = false is needed in the event the user doesn't select an item
     @PostMapping(params = "update")
     public String updateCart (@RequestParam(required = false) List<String> markedItem,Model model,
   HttpServletRequest request, HttpSession session,
-  @RequestParam(required = false) List<Integer> currCount) {
+  @RequestParam(required = false) List<Integer> currCount,
+  @RequestParam(required = false) List<String> itemId) {
 
         HashMap<Item, Integer> cart = (HashMap<Item, Integer>)session.getAttribute("cart");
         String msg = "";
 
-//        if(markedItem == null || currCount == null){
-//            msg += "No items selected!";
-//            model.addAttribute("msg", msg);
-//            session.setAttribute("msg", msg);
-//            return "redirect:/editCart";
-//        }
-//        else if (markedItem != null){
+//if (markedItem != null){
 //            for(String s : markedItem){
 //                int id = Integer.parseInt(s);
 //                for(Item i : cart.keySet()){
@@ -97,22 +90,17 @@ public class EditCartController {
 //                }
 //            }
 //        }
-        Object o = request.getParameter("itemId");
 
-        msg += o;
-//        else if(currCount != null){
-//            Iterator it = (Iterator) cart.entrySet();
-//
-//            while(it.hasNext()){
-//                for(Integer i : currCount){
-//                    HashMap.Entry pair = (Map.Entry)it.next();
-//                    if(pair.getValue() != i){
-//                        pair.setValue(i);
-//                    }
-//                }
-//            }
-//        }
+//        HashMap<Item, Integer> update = new HashMap<>();
 
+        for(String s : itemId){
+            for(Integer count : currCount){
+                int id = Integer.parseInt(s);
+                Item i = itemDao.findById(id);
+
+
+            }
+        }
 
 
         session.setAttribute("cart", cart);
