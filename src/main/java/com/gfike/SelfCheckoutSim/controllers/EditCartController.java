@@ -52,9 +52,9 @@ public class EditCartController {
     @PostMapping(params = "add")
     public String addItem (ServletRequest request, HttpSession session, Model model) {
         HashMap<Item, Integer> cart= (HashMap<Item, Integer>)session.getAttribute("cart");
-
+        String msg = "";
         if (request.getParameter("shelf").isEmpty()){
-            String msg = "Select an item to add to the cart!";
+             msg = "Select an item to add to the cart!";
             model.addAttribute("msg", msg);
             session.setAttribute("msg", msg);
             return "redirect:/editCart";
@@ -63,7 +63,7 @@ public class EditCartController {
         int id = Integer.parseInt(request.getParameter("shelf"));
         Item i = itemDao.findById(id);
 
-        cart.putIfAbsent(i, 1);
+        cart.put(i, 1);
 
         model.addAttribute("cart", cart);
         session.setAttribute("cart", cart);
@@ -73,38 +73,21 @@ public class EditCartController {
     // @requestparam required = false is needed in the event the user doesn't select an item
     @PostMapping(params = "update")
     public String updateCart (@RequestParam(required = false) List<String> markedItem,Model model,
-  HttpServletRequest request, HttpSession session,
-  @RequestParam(required = false) List<Integer> currCount,
-  @RequestParam(required = false) List<String> itemId) {
+  HttpServletRequest request, HttpSession session){
+//  @RequestParam(required = false) List<Integer> currCount,
+//  @RequestParam(required = false) List<String> itemId) {
 
         HashMap<Item, Integer> cart = (HashMap<Item, Integer>)session.getAttribute("cart");
         String msg = "";
 
-//if (markedItem != null){
-//            for(String s : markedItem){
-//                int id = Integer.parseInt(s);
-//                for(Item i : cart.keySet()){
-//                    if(id == i.getUid()){
-//                        cart.remove(i);
-//                    }
-//                }
-//            }
-//        }
+        Iterator it = cart.entrySet().iterator();
 
-//        HashMap<Item, Integer> update = new HashMap<>();
-
-        for(String s : itemId){
-            for(Integer count : currCount){
-                int id = Integer.parseInt(s);
-                Item i = itemDao.findById(id);
-
-
-            }
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry)it.next();
+            msg += entry.getKey().toString() + ": " + entry.getValue();
         }
 
-
-        session.setAttribute("cart", cart);
-        model.addAttribute("cart", cart);
+//        HashMap<Item, Integer> update = new HashMap<>();
 
         model.addAttribute("msg", msg);
         session.setAttribute("msg", msg);
