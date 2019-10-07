@@ -47,6 +47,7 @@ public class EditCartController {
         model.addAttribute("msg", msg);
         return "editCart";
     }
+    // TODO use hidden input?
     // old way below
     //    @RequestMapping(value="/editCart", params="add", method = RequestMethod.POST)
     @PostMapping(params = "add")
@@ -73,25 +74,46 @@ public class EditCartController {
     // @requestparam required = false is needed in the event the user doesn't select an item
     @PostMapping(params = "update")
     public String updateCart (@RequestParam(required = false) List<String> markedItem,Model model,
-  HttpServletRequest request, HttpSession session){
-//  @RequestParam(required = false) List<Integer> currCount,
-//  @RequestParam(required = false) List<String> itemId) {
+  HttpServletRequest request, HttpSession session,
+  @RequestParam(required = false) List<Integer> currCount,
+  @RequestParam(required = false) List<String> itemId) {
 
         HashMap<Item, Integer> cart = (HashMap<Item, Integer>)session.getAttribute("cart");
         String msg = "";
 
         Iterator it = cart.entrySet().iterator();
 
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry)it.next();
-            Item item = (Item)entry.getKey();
-            String id = "" + item.getUid();
-            if (markedItem.contains(id)){
-                cart.remove(item);
+        if(markedItem != null) {
+            while (it.hasNext()) {
+                Map.Entry entry = (Map.Entry)it.next();
+                Item item = (Item)entry.getKey();
+                String id = "" + item.getUid();
+
+                // removes item from cart and from lists
+                if (markedItem.contains(id)){
+                    cart.remove(item);
+                    if (itemId.contains(id)){
+                        int pos = itemId.indexOf(id);
+                        currCount.remove(pos);
+                        itemId.remove(pos);
+                    }
+                }
             }
         }
 
-//        HashMap<Item, Integer> update = new HashMap<>();
+        HashMap<Item, Integer> updated = new HashMap<>();
+
+        for(int i = 0; i < currCount.size(); i++){
+            int id = Integer.parseInt(itemId.get(i));
+            Item item = itemDao.findById(id);
+            updated.put(item, currCount.get(i));
+        }
+
+       cart.forEach(
+               (Item i) ? updated.containsKey(i)
+       );
+
+
 
         model.addAttribute("msg", msg);
         session.setAttribute("msg", msg);

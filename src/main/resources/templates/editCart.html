@@ -37,11 +37,11 @@
 
                     <label for="markedItem" th:text="${entry.key.name}"></label>
                 </td>
-<!--                <td th:text="${entry.value}"></td>-->
-<!--                <td>-->
-<!--                    <input type="hidden" name="itemId" id="itemId" th:value="${entry.key.uid}"/>-->
-<!--                    <input type="number" name="currCount" id="currCount"/>-->
-<!--                </td>-->
+                <td th:text="${entry.value}"></td>
+                <td>
+                    <input type="hidden" name="itemId" id="itemId" th:value="${entry.key.uid}"/>
+                    <input type="number" name="currCount" id="currCount" value="0"/>
+                </td>
             </tr>
         </table>
         <input type = "submit" name = "update" value="Update Cart"/>
