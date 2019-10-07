@@ -84,7 +84,11 @@ public class EditCartController {
 
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry)it.next();
-            msg += entry.getKey().toString() + ": " + entry.getValue();
+            Item item = (Item)entry.getKey();
+            String id = "" + item.getUid();
+            if (markedItem.contains(id)){
+                cart.remove(item);
+            }
         }
 
 //        HashMap<Item, Integer> update = new HashMap<>();
