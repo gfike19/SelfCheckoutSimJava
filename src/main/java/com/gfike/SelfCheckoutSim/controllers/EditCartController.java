@@ -77,13 +77,14 @@ public class EditCartController {
   HttpServletRequest request, HttpSession session,
   @RequestParam(required = false) List<Integer> currCount,
   @RequestParam(required = false) List<String> itemId) {
-
-        HashMap<Item, Integer> cart = (HashMap<Item, Integer>)session.getAttribute("cart");
         String msg = "";
+        HashMap<Item, Integer> cart = (HashMap<Item, Integer>)session.getAttribute("cart");
 
+        //unsure why try catch prevents issues
+        try {
         Iterator cartIt = cart.entrySet().iterator();
 
-        if(markedItem != null) {
+        if(markedItem != null && markedItem.size() > 0) {
             while (cartIt.hasNext()) {
                 Map.Entry entry = (Map.Entry)cartIt.next();
                 Item item = (Item)entry.getKey();
@@ -92,26 +93,34 @@ public class EditCartController {
                 // removes item from cart and from lists
                 if (markedItem.contains(id)){
                     cart.remove(item);
-                    if (itemId.contains(id)){
-                        int pos = itemId.indexOf(id);
-                        currCount.remove(pos);
-                        itemId.remove(pos);
-                    }
+                }
+
+                if (itemId.contains(id)){
+                    int pos = itemId.indexOf(id);
+                    currCount.remove(pos);
+                    itemId.remove(pos);
                 }
             }
         }
 
-        while (cartIt.hasNext()) {
-            Map.Entry entry = (Map.Entry) cartIt.next();
-            Item item = (Item) entry.getKey();
-            int oldVal = cart.get(item);
-            int newVal = oldVal + (int) entry.getValue();
-            cart.replace(item, oldVal, newVal);
+            while (cartIt.hasNext()) {
+
+                Map.Entry entry = (Map.Entry) cartIt.next();
+                Item item = (Item) entry.getKey();
+                int oldVal = cart.get(item);
+                int newVal = oldVal + (int) entry.getValue();
+
+                if(newVal >= 0){
+                    cart.replace(item, oldVal, newVal);
+                }
+            }
+        } catch (Exception e){
         }
-        
 
         model.addAttribute("msg", msg);
         session.setAttribute("msg", msg);
+        model.addAttribute("cart", cart);
+        session.setAttribute("cart", cart);
 
         return "redirect:/editCart";
     }
