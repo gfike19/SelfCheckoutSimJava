@@ -108,24 +108,7 @@ public class EditCartController {
             int newVal = oldVal + (int) entry.getValue();
             cart.replace(item, oldVal, newVal);
         }
-
-
-//        might not be needed
-//        HashMap<Item, Integer> updated = new HashMap<>();
-//
-//        for(int i = 0; i < currCount.size(); i++){
-//            int id = Integer.parseInt(itemId.get(i));
-//            Item item = itemDao.findById(id);
-//            updated.put(item, currCount.get(i));
-//        }
-
-//        doesn't work
-//        while (updateIt.hasNext()) {
-//            Map.Entry entry = (Map.Entry)updateIt.next();
-//            Item currentItem = (Item)entry.getKey();
-//            if(cart.keySet().contains(currentItem)){
-//            }
-//        }
+        
 
         model.addAttribute("msg", msg);
         session.setAttribute("msg", msg);
