@@ -81,11 +81,11 @@ public class EditCartController {
         HashMap<Item, Integer> cart = (HashMap<Item, Integer>)session.getAttribute("cart");
         String msg = "";
 
-        Iterator it = cart.entrySet().iterator();
+        Iterator cartIt = cart.entrySet().iterator();
 
         if(markedItem != null) {
-            while (it.hasNext()) {
-                Map.Entry entry = (Map.Entry)it.next();
+            while (cartIt.hasNext()) {
+                Map.Entry entry = (Map.Entry)cartIt.next();
                 Item item = (Item)entry.getKey();
                 String id = "" + item.getUid();
 
@@ -101,19 +101,31 @@ public class EditCartController {
             }
         }
 
-        HashMap<Item, Integer> updated = new HashMap<>();
-
-        for(int i = 0; i < currCount.size(); i++){
-            int id = Integer.parseInt(itemId.get(i));
-            Item item = itemDao.findById(id);
-            updated.put(item, currCount.get(i));
+        while (cartIt.hasNext()) {
+            Map.Entry entry = (Map.Entry) cartIt.next();
+            Item item = (Item) entry.getKey();
+            int oldVal = cart.get(item);
+            int newVal = oldVal + (int) entry.getValue();
+            cart.replace(item, oldVal, newVal);
         }
 
-       cart.forEach(
-               (Item i) ? updated.containsKey(i)
-       );
 
+//        might not be needed
+//        HashMap<Item, Integer> updated = new HashMap<>();
+//
+//        for(int i = 0; i < currCount.size(); i++){
+//            int id = Integer.parseInt(itemId.get(i));
+//            Item item = itemDao.findById(id);
+//            updated.put(item, currCount.get(i));
+//        }
 
+//        doesn't work
+//        while (updateIt.hasNext()) {
+//            Map.Entry entry = (Map.Entry)updateIt.next();
+//            Item currentItem = (Item)entry.getKey();
+//            if(cart.keySet().contains(currentItem)){
+//            }
+//        }
 
         model.addAttribute("msg", msg);
         session.setAttribute("msg", msg);
@@ -122,4 +134,3 @@ public class EditCartController {
     }
 
 }
-
