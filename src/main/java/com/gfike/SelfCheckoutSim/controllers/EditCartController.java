@@ -47,7 +47,7 @@ public class EditCartController {
         model.addAttribute("msg", msg);
         return "editCart";
     }
-    // TODO use hidden input?
+
     // old way below
     //    @RequestMapping(value="/editCart", params="add", method = RequestMethod.POST)
     @PostMapping(params = "add")
@@ -71,6 +71,9 @@ public class EditCartController {
 
         return "redirect:/editCart";
     }
+
+    /* TODO need to fix issues where you cannot remove one item and increment another
+    *   TODO fix incrementing*/
     // @requestparam required = false is needed in the event the user doesn't select an item
     @PostMapping(params = "update")
     public String updateCart (@RequestParam(required = false) List<String> markedItem,Model model,
