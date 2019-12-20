@@ -8,15 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.Array;
 import java.util.*;
 
 @Controller
 @RequestMapping("editCart")
 public class EditCartController {
 
-    /*
-    TODO remove items from all items list that have already been put in cart
-     */
     @Autowired
     public ItemDao itemDao;
 
@@ -25,24 +23,32 @@ public class EditCartController {
     @GetMapping
     public String editCartGet(Model model,  HttpSession session){
 
-        HashMap<Item, Integer> cart;
         List<Item> items;
+        if (session.getAttribute("items") != null) {
+            items = (List<Item>)session.getAttribute("cart");
+        } else {
+            items = itemDao.findAll();
+        }
 
+        HashMap<Item, Integer> cart;
         if (session.getAttribute("cart") != null){
             cart = (HashMap<Item, Integer>)session.getAttribute("cart");
-            items = itemDao.findAll();
-            Set<Item> presentItems = cart.keySet();
-            //TODO convert set to array to find items that are in cart and remove from allitemss
-
-            for(int i = 0; i < presentItems.size(); i++){
-                if(items.contains(presentItems.){
-
-                }
-            }
+                /*
+    TODO remove items from all items list that have already been put in cart, started work below
+     */
+//            Set<Item> s = cart.keySet();
+//
+//            ArrayList<Integer> uids = null;
+//
+//            for(Item i : items){
+//                int id = i.getUid();
+//                if (uids.contains(id)){
+//                    items.remove(i);
+//                }
+//            }
         }
-        else{
+        else {
             cart = new HashMap<Item, Integer>();
-            items = itemDao.findAll();
         }
 
         model.addAttribute("cart", cart);
