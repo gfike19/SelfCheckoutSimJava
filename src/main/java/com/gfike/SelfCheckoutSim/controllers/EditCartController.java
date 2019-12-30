@@ -8,10 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-<<<<<<< HEAD
-import java.lang.reflect.Array;
-=======
->>>>>>> duplicate-items
 import java.util.*;
 
 @Controller
@@ -88,8 +84,6 @@ public class EditCartController {
         return "redirect:/editCart";
     }
 
-    /* TODO need to fix issues where you cannot remove one item and increment another
-    *   TODO fix incrementing*/
     // @requestparam required = false is needed in the event the user doesn't select an item
     @PostMapping(params = "update")
     public String updateCart (@RequestParam(required = false) List<String> markedItem,Model model,
