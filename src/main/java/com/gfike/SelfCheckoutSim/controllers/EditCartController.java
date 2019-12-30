@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("editCart")
@@ -47,7 +44,7 @@ public class EditCartController {
         model.addAttribute("msg", msg);
         return "editCart";
     }
-    // TODO use hidden input?
+
     // old way below
     //    @RequestMapping(value="/editCart", params="add", method = RequestMethod.POST)
     @PostMapping(params = "add")
@@ -79,48 +76,37 @@ public class EditCartController {
   @RequestParam(required = false) List<String> itemId) {
         String msg = "";
         HashMap<Item, Integer> cart = (HashMap<Item, Integer>)session.getAttribute("cart");
+        HashMap<Item, Integer> clone = (HashMap<Item, Integer>) cart.clone();
 
-        //unsure why try catch prevents issues
-        try {
-        Iterator cartIt = cart.entrySet().iterator();
+            for (HashMap.Entry<Item, Integer> entry : cart.entrySet()) {
+                Item item = entry.getKey();
+                int id = item.getUid();
+                int pos = itemId.indexOf(id + "");
 
-        if(markedItem != null && markedItem.size() > 0) {
-            while (cartIt.hasNext()) {
-                Map.Entry entry = (Map.Entry)cartIt.next();
-                Item item = (Item)entry.getKey();
-                String id = "" + item.getUid();
+                if (itemId.contains(id + "")) {
+                    int oldVal = entry.getValue();
+                    int change = currCount.get(pos);
+                    int newVal = oldVal + change;
 
-                // removes item from cart and from lists
-                if (markedItem.contains(id)){
-                    cart.remove(item);
+                    if(newVal == 0){
+                        clone.remove(entry.getKey(), entry.getValue());
+                    }
+
+                    clone.replace(entry.getKey(), newVal);
                 }
 
-                if (itemId.contains(id)){
-                    int pos = itemId.indexOf(id);
-                    currCount.remove(pos);
-                    itemId.remove(pos);
+                if (markedItem != null && markedItem.contains(id + "")) {
+                    clone.remove(entry.getKey(), entry.getValue());
                 }
+
+                currCount.remove(pos);
+                itemId.remove(pos);
             }
-        }
-
-            while (cartIt.hasNext()) {
-
-                Map.Entry entry = (Map.Entry) cartIt.next();
-                Item item = (Item) entry.getKey();
-                int oldVal = cart.get(item);
-                int newVal = oldVal + (int) entry.getValue();
-
-                if(newVal >= 0){
-                    cart.replace(item, oldVal, newVal);
-                }
-            }
-        } catch (Exception e){
-        }
 
         model.addAttribute("msg", msg);
         session.setAttribute("msg", msg);
-        model.addAttribute("cart", cart);
-        session.setAttribute("cart", cart);
+        model.addAttribute("cart", clone);
+        session.setAttribute("cart", clone);
 
         return "redirect:/editCart";
     }
