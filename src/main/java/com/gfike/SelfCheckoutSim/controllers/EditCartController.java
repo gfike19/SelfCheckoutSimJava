@@ -76,7 +76,20 @@ public class EditCartController {
         int id = Integer.parseInt(request.getParameter("shelf"));
         Item i = itemDao.findById(id);
 
-        cart.put(i, 1);
+        if(cart.size() == 0) {
+            cart.put(i, 1);
+        }
+        else{
+            List<Integer> ids = new ArrayList<>();
+
+            for(HashMap.Entry<Item, Integer> entry : cart.entrySet()){
+                int entryId = entry.getKey().getUid();
+                if(entryId == id){
+                    cart.replace(entry.getKey(), entry.getValue() + 1);
+                }
+            }
+        }
+
 
         model.addAttribute("cart", cart);
         session.setAttribute("cart", cart);
