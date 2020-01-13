@@ -1,16 +1,18 @@
 package com.gfike.SelfCheckoutSim.models;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.util.Date;
 
 @MappedSuperclass
 public abstract class AbstractEntity {
 
 	private int uid;
-	
+
 	@Id
     @GeneratedValue
     @NotNull
@@ -22,5 +24,5 @@ public abstract class AbstractEntity {
 	protected void setUid(int uid) {
         this.uid = uid;
     }
-	
+
 }

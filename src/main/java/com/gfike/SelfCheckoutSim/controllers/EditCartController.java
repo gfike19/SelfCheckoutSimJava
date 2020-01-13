@@ -32,19 +32,6 @@ public class EditCartController {
         HashMap<Item, Integer> cart;
         if (session.getAttribute("cart") != null){
             cart = (HashMap<Item, Integer>)session.getAttribute("cart");
-                /*
-    TODO remove items from all items list that have already been put in cart, started work below
-     */
-//            Set<Item> s = cart.keySet();
-//
-//            ArrayList<Integer> uids = null;
-//
-//            for(Item i : items){
-//                int id = i.getUid();
-//                if (uids.contains(id)){
-//                    items.remove(i);
-//                }
-//            }
         }
         else {
             cart = new HashMap<Item, Integer>();

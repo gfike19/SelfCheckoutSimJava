@@ -27,7 +27,7 @@ public class CheckoutController {
         String msg;
 
         /**
-         * TODO refactoring needed here
+         * TODO need to redo controller to account for hashmap
          */
 
         boolean scannedOrBagged = true;

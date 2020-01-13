@@ -87,17 +87,4 @@ public class Item extends AbstractEntity {
 	public String toString(){
 		return this.name + " " + this.plu + " " + this.price + " " + this.fs;
 	}
-//	@PrePersist
-//	  public void setDateCreated() {
-//	    dateCreated = new Date();
-//	  }
-//
-//	public Date getDateCreated() {
-//		return dateCreated;
-//	}
-//
-//	public void setDateCreated(Date dateCreated) {
-//		this.dateCreated = dateCreated;
-//	}
-
 }
