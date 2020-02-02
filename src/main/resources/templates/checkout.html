@@ -7,35 +7,21 @@
 <body>
     <div th:replace="template :: navigation"></div>
 
-    <form method="post">
-        Select item to scan:
-        <select name="register" id="register">
-            <option value="" disabled selected>--</option>
-            <option th:each="item : ${cart}"
-                    th:value="${item.uid}"
-                    th:text="${item.name}"></option>
-        </select>
-        <input type = "submit" name = "scan" value="Scan Item"/>
-        <input type = "submit" name = "bag" value="Bag Item"/>
+    <form th:object="${orders}">
+        <input type="number" th:field="*{subTotal}" name="subTotal" id="subTotal"/>
+        <input type="number" th:field="*{tax}" name="tax" id="tax"/>
+        <input type="number" th:field="*{orderTotal}" name="orderTotal" id="orderTotal"/>
+        <button type="submit">Checkout</button>
     </form>
 
-    <table>
-        <tr>
-            <td><b>Current Order</b></td>
-        </tr>
-        <tr th:each="item : ${scanned}">
-            <td th:text="${item}"></td>
-        </tr>
-    </table>
-
-    <table>
-        <tr>
-            <td><b>Items in Bag</b></td>
-        </tr>
-        <tr th:each="item : ${bagged}">
-            <td th:text="${item}"></td>
-        </tr>
-    </table>
+<table>
+    <tr th:each="order :${allOrders}">
+        <td th:text="${uid}"></td>
+        <td th:text="${subTotal}"></td>
+        <td th:text="${tax}"></td>
+        <td th:text="${orderTotal}"></td>
+    </tr>
+</table>
 
 </body>
 <footer th:replace="template :: footer"></footer>

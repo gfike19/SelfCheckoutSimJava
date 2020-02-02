@@ -16,15 +16,15 @@ public class Orders extends AbstractEntity {
 
     private float orderTotal;
 
-    private List<Item> items;
+//    private List<Item> items;
 
     public Orders () {}
 
-    public Orders (float subTotal, float tax, float orderTotal, List<Item> items){
+    public Orders (float subTotal, float tax, float orderTotal){
         this.subTotal = subTotal;
         this.tax = tax;
         this.orderTotal = orderTotal;
-        this.items = items;
+//        this.items = items;
     }
 
     @NotNull
@@ -57,13 +57,13 @@ public class Orders extends AbstractEntity {
         this.orderTotal = orderTotal;
     }
 
-    @NotNull
-    @Column(name="Items")
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
+//    @NotNull
+//    @Column(name="Items")
+//    public List<Item> getItems() {
+//        return items;
+//    }
+//
+//    public void setItems(List<Item> items) {
+//        this.items = items;
+//    }
 }
