@@ -16,6 +16,7 @@ import javax.persistence.criteria.Order;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("checkout")
@@ -23,16 +24,27 @@ public class CheckoutController {
 
     @Autowired
     OrdersDao ordersDao;
+    // TODO: add warning about navigating away from screen?
 
     @GetMapping
-    public String checkoutGet(Model model){
-        Orders orders = new Orders();
-        model.addAttribute("orders", orders);
+    public String checkoutGet(Model model, HttpSession session) {
+//        Orders order;
+//
+//        if(session.getAttribute("orders") =! null) {
+//            order = (Orders)session.getAttribute("order");
+//        }
+//        else {
+//            order = new Orders();
+//        }
+//        HashMap<Item, Integer> cart =  (HashMap<Item, Integer>)session.getAttribute("cart");
+//
+//        model.addAttribute("order", order);
+//        model.addAttribute("cart", cart);
         return "checkout";
     }
 
 //    @PostMapping
-//    public String checkoutPost(@ModelAttribute Orders orders, Model model){
+//    public String checkoutPost(ServletRequest request, HttpSession session, Model model){
 //
 //    }
 

@@ -5,23 +5,19 @@
     <h1>Checkout Items</h1>
 </header>
 <body>
-    <div th:replace="template :: navigation"></div>
+<div th:replace="template :: navigation"></div>
 
-    <form th:object="${orders}">
-        <input type="number" th:field="*{subTotal}" name="subTotal" id="subTotal"/>
-        <input type="number" th:field="*{tax}" name="tax" id="tax"/>
-        <input type="number" th:field="*{orderTotal}" name="orderTotal" id="orderTotal"/>
-        <button type="submit">Checkout</button>
-    </form>
+<form method="post">
+    Select an item to scan:
+    <input list="allItems" id="custCart" name="custCart" />
+    <datalist id="allItems">
+        <option th:each="item : ${cart}" th:label="${item.name}" th:value="${item.uid}">
+        </option>
+    </datalist>
 
-<table>
-    <tr th:each="order :${allOrders}">
-        <td th:text="${uid}"></td>
-        <td th:text="${subTotal}"></td>
-        <td th:text="${tax}"></td>
-        <td th:text="${orderTotal}"></td>
-    </tr>
-</table>
+    <button type="submit">Scan Item</button>
+</form>
+
 
 </body>
 <footer th:replace="template :: footer"></footer>
