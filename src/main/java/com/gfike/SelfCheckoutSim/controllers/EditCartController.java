@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Controller
+@SessionAttributes("user")
 @RequestMapping("editCart")
 public class EditCartController {
 

@@ -7,18 +7,18 @@ import com.gfike.SelfCheckoutSim.models.Orders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.Order;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 @Controller
+@SessionAttributes("cart")
 @RequestMapping("checkout")
 public class CheckoutController {
 
@@ -28,18 +28,20 @@ public class CheckoutController {
 
     @GetMapping
     public String checkoutGet(Model model, HttpSession session) {
-//        Orders order;
-//
-//        if(session.getAttribute("orders") =! null) {
+        Orders order;
+
+//        if(session.getAttribute("orders") != null) {
 //            order = (Orders)session.getAttribute("order");
 //        }
 //        else {
 //            order = new Orders();
 //        }
-//        HashMap<Item, Integer> cart =  (HashMap<Item, Integer>)session.getAttribute("cart");
-//
+        HashMap<Item, Integer> cart =  (HashMap<Item, Integer>)session.getAttribute("cart");
+        Set<Item> itemsOnly = cart.keySet();
+
 //        model.addAttribute("order", order);
-//        model.addAttribute("cart", cart);
+        model.addAttribute("cart", itemsOnly);
+
         return "checkout";
     }
 
