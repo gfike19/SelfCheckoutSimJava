@@ -18,6 +18,19 @@
     <button type="submit">Scan Item</button>
 </form>
 
+<br><br>
+
+<h2>Current Order</h2>
+<table>
+<tr>
+    <td><b>Name</b></td> <td><b>PLU</b></td> <td><b>Price</b></td><td>Date Added</td>
+</tr>
+<tr th:each="each: ${order}">
+    <td th:text="${order}"></td>
+    <td th:text="${item.plu}"></td>
+    <td th:text="${item.price}"></td>
+</tr>
+</table>
 
 </body>
 <footer th:replace="template :: footer"></footer>

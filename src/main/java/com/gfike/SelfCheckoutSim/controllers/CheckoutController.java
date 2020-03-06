@@ -30,16 +30,16 @@ public class CheckoutController {
     public String checkoutGet(Model model, HttpSession session) {
         Orders order;
 
-//        if(session.getAttribute("orders") != null) {
-//            order = (Orders)session.getAttribute("order");
-//        }
-//        else {
-//            order = new Orders();
-//        }
+        if(session.getAttribute("orders") != null) {
+            order = (Orders)session.getAttribute("order");
+        }
+        else {
+            order = new Orders();
+        }
         HashMap<Item, Integer> cart =  (HashMap<Item, Integer>)session.getAttribute("cart");
         Set<Item> itemsOnly = cart.keySet();
 
-//        model.addAttribute("order", order);
+        model.addAttribute("order", order);
         model.addAttribute("cart", itemsOnly);
 
         return "checkout";
