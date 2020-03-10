@@ -45,10 +45,10 @@ public class CheckoutController {
         return "checkout";
     }
 
-//    @PostMapping
-//    public String checkoutPost(ServletRequest request, HttpSession session, Model model){
-//
-//    }
+    @PostMapping
+    public String checkoutPost(ServletRequest request, HttpSession session, Model model){
+        return "redirect:/editCart";
+    }
 
 
 }
