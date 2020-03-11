@@ -1,9 +1,9 @@
 package com.gfike.SelfCheckoutSim.controllers;
 
+import com.gfike.SelfCheckoutSim.daos.CustOrderDao;
 import com.gfike.SelfCheckoutSim.daos.ItemDao;
-import com.gfike.SelfCheckoutSim.daos.OrdersDao;
+import com.gfike.SelfCheckoutSim.models.CustOrder;
 import com.gfike.SelfCheckoutSim.models.Item;
-import com.gfike.SelfCheckoutSim.models.Orders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,18 +23,20 @@ import java.util.Set;
 public class CheckoutController {
 
     @Autowired
-    OrdersDao ordersDao;
+    CustOrderDao custOrderDao;
     // TODO: add warning about navigating away from screen?
+    @Autowired
+    ItemDao itemDao;
 
     @GetMapping
     public String checkoutGet(Model model, HttpSession session) {
-        Orders order;
+        CustOrder order;
 
-        if(session.getAttribute("orders") != null) {
-            order = (Orders)session.getAttribute("order");
+        if(session.getAttribute("order") != null) {
+            order = (CustOrder)session.getAttribute("order");
         }
         else {
-            order = new Orders();
+            order = new CustOrder();
         }
         HashMap<Item, Integer> cart =  (HashMap<Item, Integer>)session.getAttribute("cart");
         Set<Item> itemsOnly = cart.keySet();
@@ -47,6 +49,13 @@ public class CheckoutController {
 
     @PostMapping
     public String checkoutPost(ServletRequest request, HttpSession session, Model model){
+
+        int id = Integer.parseInt(request.getParameter("custCart"));
+        Item i = itemDao.findById(id);
+
+        CustOrder order = (CustOrder)session.getAttribute("order");
+        order.update(i);
+
         return "redirect:/editCart";
     }
 

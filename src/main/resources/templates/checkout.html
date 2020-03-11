@@ -26,9 +26,8 @@
     <td>Name of Item</td><td>Quantity</td>
 </tr>
 <tr th:each="each: ${order}">
-    <td th:text="${order}"></td>
-    <td th:text="${item.plu}"></td>
-    <td th:text="${item.price}"></td>
+    <td th:text="${each.key}"></td>
+    <td th:text="${each.value}"></td>
 </tr>
 </table>
 
